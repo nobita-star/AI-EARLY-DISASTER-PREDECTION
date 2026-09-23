@@ -709,24 +709,45 @@ async def lifespan(app: FastAPI):
     )
 
     # 5. Hydrodynamic Physics & Scenario Layer
-    state.physics_sim = PhysicsInspiredMVPSimulator()
-    state.scenario_eng = ScenarioEngine(
-        model_engine=state.model_eng,
-        feature_engineer=state.feature_eng,
-        physics_sim=state.physics_sim
-    )
+    try:
+        state.physics_sim = PhysicsInspiredMVPSimulator()
+        state.scenario_eng = ScenarioEngine(
+            model_engine=state.model_eng,
+            feature_engineer=state.feature_eng,
+            physics_sim=state.physics_sim
+        )
+    except Exception as e:
+        logger.warning(f"Physics engine fallback: {e}")
 
     # 6. Satellite Validation Engine
-    state.validation_eng = SatelliteValidationEngine()
+    try:
+        state.validation_eng = SatelliteValidationEngine()
+    except Exception as e:
+        logger.warning(f"Validation engine fallback: {e}")
 
     # 7. Self-Auditing Spec Predictor Engine
-    state.spec_predictor = DisasterRiskPredictor()
+    try:
+        state.spec_predictor = DisasterRiskPredictor()
+    except Exception as e:
+        logger.warning(f"Spec predictor fallback: {e}")
 
     # 8. Remote Sensing & Geofenced Alerts
-    state.gee_client = GEERemoteSensingClient()
-    state.usgs_client = USGSEarthExplorerClient()
-    state.user_store = RegisteredUserStore()
-    state.notif_service = NotificationService()
+    try:
+        state.gee_client = GEERemoteSensingClient()
+    except Exception as e:
+        logger.warning(f"GEE client fallback: {e}")
+    try:
+        state.usgs_client = USGSEarthExplorerClient()
+    except Exception as e:
+        logger.warning(f"USGS client fallback: {e}")
+    try:
+        state.user_store = RegisteredUserStore()
+    except Exception as e:
+        logger.warning(f"User store fallback: {e}")
+    try:
+        state.notif_service = NotificationService()
+    except Exception as e:
+        logger.warning(f"Notification service fallback: {e}")
 
     state.is_ready = True
     logger.info("All engines ready (XGBoost + DL + GEE + PostGIS Geofencing). Serving requests.")
