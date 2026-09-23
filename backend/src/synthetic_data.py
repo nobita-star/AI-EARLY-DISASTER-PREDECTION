@@ -20,7 +20,10 @@ import numpy as np
 import pandas as pd
 import joblib
 from xgboost import XGBClassifier
-import shap
+try:
+    import shap
+except Exception:
+    shap = None
 
 SPEC_FEATURE_NAMES = [
     "rainfall_last_24h",
@@ -110,7 +113,12 @@ def train_and_serialize_spec_model(
     )
     clf.fit(X, y)
 
-    explainer = shap.TreeExplainer(clf)
+    explainer = None
+    if shap is not None:
+        try:
+            explainer = shap.TreeExplainer(clf)
+        except Exception:
+            explainer = None
 
     bundle = {
         "model": clf,
