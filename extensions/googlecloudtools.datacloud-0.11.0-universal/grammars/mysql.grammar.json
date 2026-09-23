@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "MySQL",
+  "scopeName": "source.mysql",
+  "patterns": [
+    { "include": "#backtick-identifier" },
+    { "include": "#double-quote-string" },
+    { "include": "#mysql-operators" },
+    { "include": "#mysql-keywords" },
+    { "include": "#mysql-datatypes" },
+    { "include": "#mysql-functions" },
+    { "include": "source.sql" }
+  ],
+  "repository": {
+    "backtick-identifier": {
+      "name": "variable.other.quoted.backtick.mysql",
+      "begin": "`",
+      "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.mysql" } },
+      "end": "`",
+      "endCaptures": { "0": { "name": "punctuation.definition.string.end.mysql" } },
+      "patterns": [ { "name": "constant.character.escape.mysql", "match": "\\\\." } ]
+    },
+    "double-quote-string": {
+      "name": "string.quoted.double.mysql",
+      "begin": "\"",
+      "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.mysql" } },
+      "end": "\"",
+      "endCaptures": { "0": { "name": "punctuation.definition.string.end.mysql" } },
+      "patterns": [ { "name": "constant.character.escape.mysql", "match": "\\\\." } ]
+    },
+    "mysql-operators": {
+      "patterns": [
+        { "name": "keyword.operator.comparison.mysql", "match": "<=>|(?i:\\b(regexp|rlike|not\\s+regexp)\\b)" },
+        { "name": "keyword.operator.logical.mysql", "match": "(?i:\\b(xor)\\b)|&&|\\|\\||!" }
+      ]
+    },
+    "mysql-keywords": {
+      "patterns": [
+        { "name": "keyword.other.mysql", "match": "(?i:\\b(straight_join|force\\s+index|use\\s+index|ignore\\s+index|on\\s+duplicate\\s+key\\s+update|auto_increment|engine|charset|collate|replace|load\\s+data|infile|show|flush|optimize)\\b)" }
+      ]
+    },
+    "mysql-datatypes": {
+      "patterns": [
+        { "name": "storage.type.mysql", "match": "(?i:\\b(tinyint|mediumint|bigint|unsigned|float|double|decimal|varchar|char|tinytext|text|mediumtext|longtext|tinyblob|blob|mediumblob|longblob|binary|varbinary|enum|set|year|datetime|timestamp)\\b)" }
+      ]
+    },
+    "mysql-functions": {
+      "patterns": [
+        { "name": "support.function.mysql", "match": "(?i:\\b(if|ifnull|isnull|concat(_ws)?|substring_index|str_to_date|date_format|field|find_in_set|md5|sha[12]|aes_(encrypt|decrypt)|now|curdate|curtime|date_(add|sub)|datediff|timediff|unix_timestamp|from_unixtime|json_(extract|unquote|array|object|set|insert|replace|remove|keys|valid)|benchmark|sleep)\\b)" }
+      ]
+    }
+  }
+}

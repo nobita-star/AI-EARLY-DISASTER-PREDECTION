@@ -1,0 +1,2451 @@
+{
+	"name": "datacloud",
+	"publisher": "googlecloudtools",
+	"displayName": "Google Cloud Data Agent Kit",
+	"description": "Bring the full power of Google Cloud Data Agent Kit (starter pack) to your intelligent IDE",
+	"version": "0.11.0",
+	"license": "SEE LICENSE IN LICENSE",
+	"preview": true,
+	"icon": "images/datacloud_icon.png",
+	"engines": {
+		"vscode": "^1.97.0"
+	},
+	"categories": [],
+	"keywords": [
+		"BigQuery",
+		"Looker",
+		"Spark",
+		"Dataproc",
+		"Pubsub",
+		"Dataflow",
+		"Alloydb",
+		"PostgreSQL",
+		"Cloud SQL",
+		"Firestore",
+		"Spanner",
+		"Spanner-graph",
+		"Sqlx",
+		"Notebook",
+		"Python",
+		"Bigtable",
+		"Datastream",
+		"Database Migration Service",
+		"Memorystore",
+		"Apache Flume",
+		"Apache Beam",
+		"Knowledge Catalog",
+		"Dataplex",
+		"Dataform",
+		"pipelines",
+		"DBT",
+		"Lakehouse",
+		"Iceberg",
+		"Cloud Code",
+		"Data transfer service"
+	],
+	"activationEvents": [
+		"onStartupFinished",
+		"onFileSystem:gs",
+		"onFileSystem:dataplex",
+		"onFileSystem:bigquery-resource",
+		"onFileSystem:dataproc-resource",
+		"onCustomEditor:datacloud.sparkCustomEditor"
+	],
+	"main": "datacloud_vscode",
+	"contributes": {
+		"icons": {
+			"database-search": {
+				"description": "Database Search Outline",
+				"default": {
+					"fontPath": "icons/datacloud_icons.woff",
+					"fontCharacter": "\\E000"
+				}
+			}
+		},
+		"notebookRenderer": [
+			{
+				"id": "sparkmonitor-renderer",
+				"displayName": "Managed Service for Apache Spark SparkMonitor Renderer",
+				"mimeTypes": [
+					"application/vnd.sparkmonitor+json"
+				],
+				"entrypoint": "./dataproc/notebook_renderers/sparkmonitor_renderer.js",
+				"requiresMessaging": "always"
+			},
+			{
+				"id": "sparkmonitor-logfilter",
+				"displayName": "Managed Service for Apache Spark SparkMonitor Log Filter",
+				"entrypoint": "./dataproc/notebook_renderers/sparkmonitor_log_renderer.js",
+				"mimeTypes": [
+					"application/vnd.code.notebook.stderr"
+				],
+				"requiresMessaging": "always"
+			}
+		],
+		"languages": [
+			{
+				"id": "sqlx",
+				"aliases": [
+					"Dataform SQLX",
+					"sqlx"
+				],
+				"extensions": [
+					".sqlx"
+				],
+				"configuration": "./languages/language-configuration.json"
+			},
+			{
+				"id": "postgres",
+				"aliases": [
+					"PostgreSQL",
+					"postgres"
+				],
+				"icon": {
+					"light": "./dataplex/resources/database.svg",
+					"dark": "./dataplex/resources/database.svg"
+				},
+				"configuration": "./languages/language-configuration.json"
+			},
+			{
+				"id": "mysql",
+				"aliases": [
+					"MySQL",
+					"mysql"
+				],
+				"icon": {
+					"light": "./dataplex/resources/database.svg",
+					"dark": "./dataplex/resources/database.svg"
+				},
+				"configuration": "./languages/language-configuration.json"
+			},
+			{
+				"id": "dataplex-bq-table",
+				"extensions": [
+					".bq.table"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table.svg",
+					"dark": "./dataplex/resources/table.svg"
+				}
+			},
+			{
+				"id": "dataplex-bq-dataset",
+				"extensions": [
+					".bq.dataset"
+				],
+				"icon": {
+					"light": "./dataplex/resources/dataset.svg",
+					"dark": "./dataplex/resources/dataset.svg"
+				}
+			},
+			{
+				"id": "dataplex-bq-view",
+				"extensions": [
+					".bq.view"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table_view.svg",
+					"dark": "./dataplex/resources/table_view.svg"
+				}
+			},
+			{
+				"id": "dataplex-lakehouse-table",
+				"extensions": [
+					".lakehouse.table"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table.svg",
+					"dark": "./dataplex/resources/table.svg"
+				}
+			},
+			{
+				"id": "dataplex-spanner-table",
+				"extensions": [
+					".spanner.table"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table.svg",
+					"dark": "./dataplex/resources/table.svg"
+				}
+			},
+			{
+				"id": "dataplex-spanner-database",
+				"extensions": [
+					".spanner.database"
+				],
+				"icon": {
+					"light": "./dataplex/resources/database.svg",
+					"dark": "./dataplex/resources/database.svg"
+				}
+			},
+			{
+				"id": "dataplex-spanner-view",
+				"extensions": [
+					".spanner.view"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table_view.svg",
+					"dark": "./dataplex/resources/table_view.svg"
+				}
+			},
+			{
+				"id": "dataplex-spanner-changestream",
+				"extensions": [
+					".spanner.changestream"
+				],
+				"icon": {
+					"light": "./dataplex/resources/history.svg",
+					"dark": "./dataplex/resources/history.svg"
+				}
+			},
+			{
+				"id": "dataplex-spanner-model",
+				"extensions": [
+					".spanner.model"
+				],
+				"icon": {
+					"light": "./dataplex/resources/model_training.svg",
+					"dark": "./dataplex/resources/model_training.svg"
+				}
+			},
+			{
+				"id": "dataplex-spanner-graph",
+				"extensions": [
+					".spanner.graph"
+				],
+				"icon": {
+					"light": "./dataplex/resources/polyline.svg",
+					"dark": "./dataplex/resources/polyline.svg"
+				}
+			},
+			{
+				"id": "dataplex-bigquery-graph",
+				"extensions": [
+					".bq.graph"
+				],
+				"icon": {
+					"light": "./dataplex/resources/hub.svg",
+					"dark": "./dataplex/resources/hub.svg"
+				}
+			},
+			{
+				"id": "dataplex-alloydb-table",
+				"extensions": [
+					".alloydb.table"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table.svg",
+					"dark": "./dataplex/resources/table.svg"
+				}
+			},
+			{
+				"id": "dataplex-alloydb-view",
+				"extensions": [
+					".alloydb.view"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table_view.svg",
+					"dark": "./dataplex/resources/table_view.svg"
+				}
+			},
+			{
+				"id": "dataplex-cloudsql-table",
+				"extensions": [
+					".cloudsql.table"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table.svg",
+					"dark": "./dataplex/resources/table.svg"
+				}
+			},
+			{
+				"id": "dataplex-cloudsql-view",
+				"extensions": [
+					".cloudsql.view"
+				],
+				"icon": {
+					"light": "./dataplex/resources/table_view.svg",
+					"dark": "./dataplex/resources/table_view.svg"
+				}
+			},
+			{
+				"id": "dataproc-spark-cluster",
+				"extensions": [
+					".spark.cluster"
+				],
+				"icon": {
+					"light": "./dataproc/resources/apache_spark.svg",
+					"dark": "./dataproc/resources/apache_spark.svg"
+				}
+			},
+			{
+				"id": "dataproc-spark-runtime",
+				"extensions": [
+					".spark.runtime"
+				],
+				"icon": {
+					"light": "./dataproc/resources/apache_spark.svg",
+					"dark": "./dataproc/resources/apache_spark.svg"
+				}
+			},
+			{
+				"id": "dataproc-spark-job",
+				"extensions": [
+					".spark.job"
+				],
+				"icon": {
+					"light": "./dataproc/resources/apache_spark.svg",
+					"dark": "./dataproc/resources/apache_spark.svg"
+				}
+			},
+			{
+				"id": "dataproc-spark-batch",
+				"extensions": [
+					".spark.batch"
+				],
+				"icon": {
+					"light": "./dataproc/resources/apache_spark.svg",
+					"dark": "./dataproc/resources/apache_spark.svg"
+				}
+			},
+			{
+				"id": "dataproc-spark-session",
+				"extensions": [
+					".spark.session"
+				],
+				"icon": {
+					"light": "./dataproc/resources/apache_spark.svg",
+					"dark": "./dataproc/resources/apache_spark.svg"
+				}
+			}
+		],
+		"grammars": [
+			{
+				"language": "sqlx",
+				"scopeName": "source.sqlx",
+				"path": "./grammars/sqlx.grammar.json"
+			},
+			{
+				"language": "postgres",
+				"scopeName": "source.postgres",
+				"path": "./grammars/postgres.grammar.json"
+			},
+			{
+				"language": "mysql",
+				"scopeName": "source.mysql",
+				"path": "./grammars/mysql.grammar.json"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "dataplex-universal-catalog",
+					"title": "Catalog",
+					"icon": "dataplex/resources/dataplex.svg"
+				},
+				{
+					"id": "cloudStorageContainer",
+					"icon": "gcs/resources/cloud_storage.svg",
+					"title": "Cloud Storage"
+				},
+				{
+					"id": "bigquery",
+					"title": "BigQuery",
+					"icon": "dataplex/resources/bigquery.svg"
+				},
+				{
+					"id": "spark-resource-tree",
+					"title": "Managed Service for Apache Spark",
+					"icon": "dataproc/resources/apache_spark.svg"
+				},
+				{
+					"id": "databases-container",
+					"title": "Databases",
+					"icon": "dataplex/resources/database.svg",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"id": "orchestration-pipeline-container",
+					"title": "Data Engineering",
+					"icon": "bigquery/resources/orchestration_pipeline_dark.svg"
+				},
+				{
+					"id": "datacloud-settings-container",
+					"title": "Google Cloud Data Agent Kit",
+					"icon": "data_cloud_settings/resources/data_cloud_settings.svg"
+				},
+				{
+					"id": "dataflow-container",
+					"title": "Dataflow",
+					"icon": "dataflow/resources/dataflow_dark.svg"
+				}
+			],
+			"panel": [
+				{
+					"id": "dataform-compiled-query-panel",
+					"title": "Compiled Query",
+					"icon": "$(output)"
+				},
+				{
+					"id": "dataform-runs-history-panel",
+					"title": "Runs History",
+					"icon": "$(history)"
+				},
+				{
+					"id": "sql-query-results-panel",
+					"title": "Query Results",
+					"icon": "$(output)"
+				},
+				{
+					"id": "composer-runs-history-panel",
+					"title": "Orchestration Pipeline Runs History",
+					"icon": "$(history)"
+				}
+			]
+		},
+		"customEditors": [
+			{
+				"viewType": "datacloud.dataplexCustomEditor",
+				"displayName": "Catalog",
+				"selector": [
+					{
+						"filenamePattern": "*.{alloydb,bq,lakehouse,spanner,cloudsql}.{table,dataset,database,instance,cluster,schema,catalog,namespace,view,changestream,model,graph}"
+					}
+				],
+				"priority": "default"
+			},
+			{
+				"viewType": "datacloud.sparkCustomEditor",
+				"displayName": "Spark Resource",
+				"selector": [
+					{
+						"filenamePattern": "*.spark.{cluster,runtime,job,batch,session}"
+					}
+				],
+				"priority": "default"
+			}
+		],
+		"views": {
+			"dataplex-universal-catalog": [
+				{
+					"id": "dataplex-universal-catalog-tree",
+					"name": "Catalog",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "dataplex-universal-catalog-onboarding",
+					"name": "Catalog",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus"
+				}
+			],
+			"cloudStorageContainer": [
+				{
+					"id": "cloudStorageExplorer",
+					"name": "Cloud Storage",
+					"icon": "gcs/resources/cloud_storage.svg",
+					"contextualTitle": "Cloud Storage",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "cloudStorageContainer-onboarding",
+					"name": "Cloud Storage",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus"
+				}
+			],
+			"databases-container": [
+				{
+					"id": "databases-view",
+					"name": "Databases",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus && datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"id": "databases-view-onboarding",
+					"name": "Databases",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus && datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				}
+			],
+			"bigquery": [
+				{
+					"id": "bigquery-explorer",
+					"name": "BigQuery",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "bigquery-onboarding",
+					"name": "BigQuery",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus"
+				}
+			],
+			"spark-resource-tree": [
+				{
+					"id": "spark-resource-tree",
+					"name": "Managed Service for Apache Spark",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "spark-resource-tree-onboarding",
+					"name": "Managed Service for Apache Spark",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus"
+				}
+			],
+			"datacloud-settings-container": [
+				{
+					"id": "datacloud-explorer-view",
+					"name": "Google Cloud Data Agent Kit",
+					"when": "datacloud.signedIn && gDataCloud.alreadyOnboarded && !config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "datacloud-settings-view",
+					"name": "General",
+					"when": "datacloud.signedIn && gDataCloud.alreadyOnboarded && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "datacloud-settings-onboarding",
+					"name": "Google Cloud Data Agent Kit",
+					"when": "!gDataCloud.alreadyOnboarded || !datacloud.signedIn"
+				}
+			],
+			"orchestration-pipeline-container": [
+				{
+					"id": "orchestration-pipeline-view",
+					"name": "Data Engineering",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "orchestration-pipeline-onboarding",
+					"name": "Data Engineering",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus"
+				}
+			],
+			"dataform-compiled-query-panel": [
+				{
+					"id": "dataform.compiledQueryView",
+					"name": "Compiled Query",
+					"type": "webview",
+					"when": "bigquery.dataform.hasDataformRepository && (resourceExtname == .sqlx || resourceExtname == .js)"
+				}
+			],
+			"dataform-runs-history-panel": [
+				{
+					"id": "dataform.runsHistoryView",
+					"name": "Runs History",
+					"type": "webview",
+					"when": "bigquery.dataform.hasDataformRepository"
+				}
+			],
+			"sql-query-results-panel": [
+				{
+					"id": "sqlquery.queryResultsView",
+					"name": "Query Results",
+					"type": "webview"
+				}
+			],
+			"composer-runs-history-panel": [
+				{
+					"id": "bigquery.composerRunsHistoryView",
+					"name": "Managed Service for Apache Airflow Runs History",
+					"type": "webview",
+					"when": "google.datacloud.bigquery.orchestrationPipeline.isOrchestrationPipeline"
+				}
+			],
+			"dataflow-container": [
+				{
+					"id": "dataflow-jobs-view",
+					"name": "Dataflow",
+					"when": "gDataCloud.alreadyOnboarded && datacloud.signedIn && config.google.datacloud.expandMenus"
+				},
+				{
+					"id": "dataflow-jobs-onboarding",
+					"name": "Dataflow",
+					"when": "(!gDataCloud.alreadyOnboarded || !datacloud.signedIn) && config.google.datacloud.expandMenus"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "bigquery-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "dataplex-universal-catalog-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "cloudStorageContainer-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "spark-resource-tree-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "datacloud-settings-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "orchestration-pipeline-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "dataflow-jobs-onboarding",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.handleLoginOrOnboarding)"
+			},
+			{
+				"view": "dataflow-jobs-view",
+				"contents": "[View Dataflow Jobs](command:google.datacloud.dataflow.jobs.list)"
+			},
+			{
+				"view": "orchestration-pipeline-view",
+				"contents": "No orchestration pipelines found.\n[Initialize Orchestration Pipeline](command:google.datacloud.orchestrationPipeline.init)\n[Pipeline Management](command:google.datacloud.bigquery.orchestrationPipeline.pipelineManagement)\nLearn more about [Orchestration Pipelines](command:google.datacloud.bigquery.orchestrationPipeline.learnMore).",
+				"when": "!bigquery.orchestrationPipeline.isOrchestrationPipeline && config.google.datacloud.expandMenus"
+			},
+			{
+				"view": "spark-resource-tree",
+				"contents": "Please login to Google Cloud to continue. If you don't have an account yet, you can get started with a [free trial](https://console.cloud.google.com/freetrial).\n[Login to Google Cloud](command:google.datacloud.auth.signIn)",
+				"when": "!datacloud.signedIn"
+			},
+			{
+				"view": "spark-resource-tree",
+				"contents": "Please select a Google Cloud project to continue. If you don't have a project yet, you can create one in [Cloud Console](https://console.cloud.google.com/projectcreate).\n[Select a project](command:google.datacloud.settings.projectStatusBar.open)",
+				"when": "datacloud.signedIn && !datacloud.projectSelected"
+			},
+			{
+				"view": "spark-resource-tree",
+				"contents": "Please set a Google Cloud region to continue.\n[Set region](command:google.datacloud.settings)",
+				"when": "datacloud.signedIn && datacloud.projectSelected && !spark.regionSet"
+			},
+			{
+				"view": "spark-resource-tree",
+				"contents": "In order to use Managed Service for Apache Spark on Google Cloud, you need to enable the [Cloud Spark API](https://console.cloud.google.com/apis/library/dataproc.googleapis.com). Consuming Google Cloud APIs may incur additional billing charges. You can learn more by clicking the above link.\n[Enable API](command:google.datacloud.settings)\nAlternatively, you can [switch projects](command:google.datacloud.settings.projectStatusBar.open) to a project that already has this API enabled.",
+				"when": "datacloud.signedIn && datacloud.projectSelected && spark.regionSet && !spark.apiEnabled && !spark.apiEnabledCheckInProgress"
+			}
+		],
+		"commands": [
+			{
+				"command": "google.datacloud.gcloud.config.syncFromExtensionToGcloud",
+				"title": "Sync Config from Extension to Google Cloud CLI",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.gcloud.config.syncFromGcloudToExtension",
+				"title": "Sync Config from Google Cloud CLI to Extension",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.cloudStorage.filter",
+				"title": "Cloud Storage > Filter",
+				"icon": "$(filter)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.cloudStorage.filterActive",
+				"title": "Cloud Storage > Filter (Active)",
+				"icon": "$(filter-filled)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.pinSettings",
+				"title": "Pin Settings",
+				"icon": "$(pin)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.unpinSettings",
+				"title": "Unpin Settings",
+				"icon": "$(pinned)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.view.catalog",
+				"title": "Switch to Catalog",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.view.gcs",
+				"title": "Switch to Cloud Storage",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.view.bigquery",
+				"title": "Switch to BigQuery",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.view.spark",
+				"title": "Switch to Spark",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.view.pipelines",
+				"title": "Switch to Pipelines",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.view.databases",
+				"title": "Switch to Databases",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.auth.signIn",
+				"title": "Sign in",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.auth.signOut",
+				"title": "Sign out",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.dataform.initProject",
+				"title": "BigQuery Dataform > Initialize a new project",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.dataform.compileProject",
+				"title": "BigQuery Dataform > Compile the project",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.dataform.runActions",
+				"title": "BigQuery Dataform > Run multiple actions",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.dataform.runTags",
+				"title": "BigQuery Dataform > Run tags",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.notebooks.createScheduledJob",
+				"title": "Schedule",
+				"icon": "$(calendar)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.dataform.run",
+				"title": "BigQuery Dataform > Run",
+				"icon": "$(play)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.openTable",
+				"title": "BigQuery > Open Table Details",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.cloudStorage.refreshExplorer",
+				"title": "Cloud Storage > Refresh",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataproc.refreshSparkResourceTree",
+				"title": "Refresh Spark Resource Tree",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.refreshUniversalCatalog",
+				"title": "Refresh",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.refreshUniversalCatalogAll",
+				"title": "Refresh Catalog",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.pipelines.refreshExplorer",
+				"title": "Refresh Orchestration Pipelines",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.refreshExplorer",
+				"title": "Refresh BigQuery",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.refreshJobs",
+				"title": "Refresh Jobs",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.refreshDatasets",
+				"title": "Refresh",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.refreshQueries",
+				"title": "Refresh Saved Queries",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.refreshDataTransfers",
+				"title": "Refresh Data Transfers",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.savedquery.rename",
+				"title": "Rename",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.savedquery.download",
+				"title": "Download",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.savedquery.delete",
+				"title": "Delete",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.settings",
+				"title": "Data Cloud Settings",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openMcpConfig",
+				"title": "MCP Configuration",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.settings.scheduler.open",
+				"title": "Data Cloud Scheduler Settings",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.settings.experiments.open",
+				"title": "Data Cloud Experiments",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.quickStartGuide",
+				"title": "Quick Start Guide",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.dataform.showCompiledGraph",
+				"title": "BigQuery Dataform > Open Graph View",
+				"icon": "bigquery/resources/orchestration_pipeline.svg",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.showDag",
+				"title": "BigQuery Orchestration Pipeline > Show DAG",
+				"icon": {
+					"light": "bigquery/resources/orchestration_pipeline.svg",
+					"dark": "bigquery/resources/orchestration_pipeline_dark.svg"
+				},
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.learnMore",
+				"title": "Learn more about Orchestration Pipelines",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.pipelineManagement",
+				"title": "BigQuery Orchestration Pipeline > Pipeline Management",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.orchestrationPipeline.init",
+				"title": "BigQuery Orchestration Pipeline > Initialize",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.addTask",
+				"title": "BigQuery Orchestration Pipeline > Add task",
+				"icon": "$(add)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.deleteTask",
+				"title": "BigQuery Orchestration Pipeline > Delete task",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.submitJob",
+				"title": "Submit Job",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.submitJobFromPalette",
+				"title": "Managed Service for Apache Spark > Submit Job",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.jobs",
+				"title": "Jobs",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.sparkUi",
+				"title": "Spark UI",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.stop",
+				"title": "Stop",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.start",
+				"title": "Start",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.restart",
+				"title": "Restart",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.conversationalAnalytics.chat",
+				"title": "Chat",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.conversationalAnalytics.chatEditor",
+				"title": "Chat",
+				"icon": "$(comment-discussion)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.conversationalAnalytics.runDiagnostics",
+				"title": "Run Diagnostics",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.cluster.profile",
+				"title": "Profile",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataflow.jobs.list",
+				"title": "Dataflow > List Jobs",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.clusters.listClusters",
+				"title": "Managed Service for Apache Spark > List Clusters",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.clusters.listClusters.menu",
+				"title": "List Clusters",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataproc.refreshClusters",
+				"title": "Refresh Spark Resource Tree > Clusters",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataproc.refreshServerless",
+				"title": "Refresh Spark Resource Tree > Serverless",
+				"icon": "$(refresh)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.serverless.findRuntimes",
+				"title": "Serverless Spark > Find Runtime",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.clusters.findCluster",
+				"title": "Managed Service for Apache Spark > Find Cluster",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.serverless.listRuntimes",
+				"title": "Serverless Spark > List Runtimes",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.serverless.listRuntimes.menu",
+				"title": "List Serverless Runtimes",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.serverless.newNotebook",
+				"title": "New Notebook",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.serverless.interactiveSessions",
+				"title": "Interactive Sessions",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.serverless.profile",
+				"title": "Profile",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.session.details",
+				"title": "Interactive Session Details",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.job.details",
+				"title": "Job Details",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openGcsFile",
+				"title": "Cloud Storage > Open File",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.copyGcsPath",
+				"title": "Cloud Storage > Copy Path",
+				"icon": "$(copy)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.renameGcsFile",
+				"title": "Cloud Storage > Rename File",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.deleteGcsFile",
+				"title": "Cloud Storage > Delete File",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.downloadGcsFile",
+				"title": "Cloud Storage > Download File",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.createGcsFolder",
+				"title": "Cloud Storage > Create Folder",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.uploadGcsFile",
+				"title": "Cloud Storage > Upload File",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.renameGcsFolder",
+				"title": "Cloud Storage > Rename Folder",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.deleteGcsFolder",
+				"title": "Cloud Storage > Delete Folder",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.createBucketGcsFolder",
+				"title": "Cloud Storage > Create Folder",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.uploadBucketGcsFile",
+				"title": "Cloud Storage > Upload File",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.createGcsBucket",
+				"title": "Cloud Storage > Create Bucket",
+				"category": "Google Cloud Data Agent Kit",
+				"icon": "$(add)"
+			},
+			{
+				"command": "google.datacloud.cloudStorage.loadInSparkNotebook",
+				"title": "Cloud Storage > Load in Spark DataFrame",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataagentinterface.installToolboxAsMcpServer",
+				"title": "Install the toolbox in all supported surfaces",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.agent.skills.installGlobal",
+				"title": "Install Agent Skills Globally",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.agent.skills.installWorkspace",
+				"title": "Install Agent Skills to Workspace",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.agent.skills.uninstallGlobal",
+				"title": "Uninstall Agent Skills Globally",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.agent.skills.uninstallWorkspace",
+				"title": "Uninstall Agent Skills from Workspace",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.conversationalAnalytics.chatTable",
+				"title": "Conversational Analytics > Chat with Table",
+				"category": "Google Cloud Data Agent Kit",
+				"icon": "$(comment-discussion)"
+			},
+			{
+				"command": "google.datacloud.conversationalAnalytics.chatDataset",
+				"title": "Conversational Analytics > Chat with Dataset",
+				"category": "Google Cloud Data Agent Kit",
+				"icon": "$(comment-discussion)"
+			},
+			{
+				"command": "google.datacloud.agent.skills.view",
+				"title": "View Agent Skills",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.notebook",
+				"title": "BigQuery > New Notebook",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.notebook.new",
+				"title": "BigQuery > New Notebook > New",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.startWithTemplate",
+				"title": "BigQuery > New Notebook > Start with template",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.sqleditor.runQuery",
+				"title": "Run Query",
+				"icon": "$(play)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.sqleditor.cancelQuery",
+				"title": "Cancel Query",
+				"icon": "$(debug-stop)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.sqleditor.queryRunning",
+				"title": "Query is running",
+				"icon": "$(loading~spin)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.universalSearch",
+				"title": "Universal Search",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.semanticSearch",
+				"title": "Search for Dataset",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInProject",
+				"title": "Search in Project",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInBigLake",
+				"title": "Find in Lakehouse",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInBigLakeCatalog",
+				"title": "Find in Lakehouse Catalog",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInBigLakeNamespace",
+				"title": "Find in Lakehouse Namespace",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInBigQuery",
+				"title": "Search in BigQuery",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInBigQueryDataset",
+				"title": "Search in Dataset",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInSpanner",
+				"title": "Search in Spanner",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInSpannerInstance",
+				"title": "Search in Instance",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInSpannerDatabase",
+				"title": "Search in Database",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInAlloyDb",
+				"title": "Search in AlloyDB",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInAlloyDbCluster",
+				"title": "Search in AlloyDB Cluster",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInAlloyDbDatabase",
+				"title": "Search in AlloyDB Database",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInAlloyDbSchema",
+				"title": "Search in AlloyDB Schema",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInCloudSql",
+				"title": "Search in Cloud SQL",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInCloudSqlInstance",
+				"title": "Search in Cloud SQL Instance",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInCloudSqlDatabase",
+				"title": "Search in Cloud SQL Database",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.findInCloudSqlSchema",
+				"title": "Search in Cloud SQL Schema",
+				"icon": "$(search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.deployConfiguration",
+				"title": "BigQuery Orchestration Pipeline > Deployment configuration",
+				"icon": "$(check)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.orchestrationPipeline.createNew",
+				"title": "BigQuery Orchestration Pipeline > Create New Pipeline",
+				"icon": "$(add)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.notebook.addBigQueryMagicSqlCell",
+				"title": "Add BigQuery SQL Cell",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.spark.newNotebook",
+				"title": "New Spark Notebook",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.queryResource",
+				"title": "Query",
+				"icon": "$(database-search)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.resource.revealByPath",
+				"title": "Dataplex > Reveal resource by path",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.queryResourceWithBigQueryDataFramesNotebook",
+				"title": "Load in BigQuery DataFrame",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.queryResourceWithPandasNotebook",
+				"title": "Load in Pandas DataFrame",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.queryResourceWithSparkNotebook",
+				"title": "Load in Spark DataFrame",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.openCatalogDetails",
+				"title": "Open resource details",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.copyResourceId",
+				"title": "Copy resource ID",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.showOnboarding",
+				"title": "Show Onboarding",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.resetOnboarding",
+				"title": "Reset Onboarding",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.dataplex.insertResourceAtCursor",
+				"title": "Insert into editor",
+				"icon": "$(chevron-right)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.datatransfer.enable",
+				"title": "Enable",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.datatransfer.disable",
+				"title": "Disable",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.databases.query.spanner.create",
+				"title": "New Spanner Query",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.databases.query.alloydb.create",
+				"title": "New AlloyDB Query",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.databases.query.cloudsql.create",
+				"title": "New Cloud SQL Query",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.bigquery.query.new",
+				"title": "New BigQuery Query",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openQuerySettings",
+				"title": "Open Query Settings",
+				"icon": "$(gear)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openQuerySettings.bigquery",
+				"title": "Open BigQuery Query Settings",
+				"icon": "$(gear)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openQuerySettings.spanner",
+				"title": "Open Spanner Query Settings",
+				"icon": "$(gear)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openQuerySettings.alloydb",
+				"title": "Open AlloyDB Query Settings",
+				"icon": "$(gear)",
+				"category": "Google Cloud Data Agent Kit"
+			},
+			{
+				"command": "google.datacloud.openQuerySettings.cloudsql",
+				"title": "Open Cloud SQL Query Settings",
+				"icon": "$(gear)",
+				"category": "Google Cloud Data Agent Kit"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "google.datacloud.sqleditor.runQuery",
+				"key": "ctrl+enter",
+				"mac": "cmd+enter",
+				"when": "editorTextFocus && editorLangId == sql && !datacloud.isQueryRunning"
+			}
+		],
+		"mcpServerDefinitionProviders": [
+			{
+				"id": "notebooksProvider",
+				"label": "Notebook MCP Provider"
+			},
+			{
+				"id": "visualizationProvider",
+				"label": "Visualization MCP Provider"
+			},
+			{
+				"id": "dataAgentKitProvider",
+				"label": "Data Agent Kit MCP Provider"
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "google.datacloud.conversationalAnalytics.chatEditor",
+					"when": "conversationalAnalytics.isEnabled && resourceFilename =~ /\\.(bq\\.table|bq\\.view|bq\\.dataset)$/",
+					"group": "navigation@1"
+				},
+				{
+					"command": "google.datacloud.bigquery.dataform.run",
+					"when": "bigquery.dataform.hasDataformRepository && (resourceExtname == .sqlx || resourceExtname == .js)",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.sqleditor.runQuery",
+					"when": "resourceLangId == sql && !datacloud.isQueryRunning",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.sqleditor.cancelQuery",
+					"when": "resourceLangId == sql && datacloud.isQueryRunning && datacloud.currentDatabaseSupportsCancellation",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.sqleditor.queryRunning",
+					"when": "resourceLangId == sql && datacloud.isQueryRunning && !datacloud.currentDatabaseSupportsCancellation",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.bigquery.orchestrationPipeline.showDag",
+					"when": "google.datacloud.bigquery.orchestrationPipeline.isActiveEditorOrchestrationPipeline",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings",
+					"when": "resourceLangId == sql && (datacloud.currentDatabaseService == '' || datacloud.currentDatabaseService == 'UNKNOWN') && !datacloud.isQueryRunning && !datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements",
+					"group": "navigation@9"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.bigquery",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'BIG_QUERY' && !datacloud.isQueryRunning && !datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements",
+					"group": "navigation@9"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.spanner",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'SPANNER' && !datacloud.isQueryRunning && !datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements",
+					"group": "navigation@9"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.alloydb",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'ALLOYDB' && !datacloud.isQueryRunning && !datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements",
+					"group": "navigation@9"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.cloudsql",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'CLOUD_SQL' && !datacloud.isQueryRunning && !datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements",
+					"group": "navigation@9"
+				}
+			],
+			"notebook/toolbar": [
+				{
+					"command": "google.datacloud.bigquery.notebooks.createScheduledJob",
+					"when": "notebookType == 'jupyter-notebook'",
+					"group": "navigation"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "google.datacloud.settings.experiments.open",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.submitJob",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.submitJobFromPalette",
+					"when": "true"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.jobs",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.sparkUi",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.stop",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.start",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.restart",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.profile",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.newNotebook",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.interactiveSessions",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.profile",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataflow.jobs.list",
+					"when": "true"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.refreshExplorer",
+					"when": "activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.filter",
+					"when": "activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.filterActive",
+					"when": "activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.copyGcsPath",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && (datacloud.gcs.selectionIsFile || datacloud.gcs.selectionIsFolder || datacloud.gcs.selectionIsBucket)"
+				},
+				{
+					"command": "google.datacloud.renameGcsFile",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsFile"
+				},
+				{
+					"command": "google.datacloud.deleteGcsFile",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsFile"
+				},
+				{
+					"command": "google.datacloud.downloadGcsFile",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsFile"
+				},
+				{
+					"command": "google.datacloud.createGcsFolder",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && (datacloud.gcs.selectionIsFolder || datacloud.gcs.selectionIsBucket)"
+				},
+				{
+					"command": "google.datacloud.uploadGcsFile",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && (datacloud.gcs.selectionIsFolder || datacloud.gcs.selectionIsBucket)"
+				},
+				{
+					"command": "google.datacloud.renameGcsFolder",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionFolderCanRename"
+				},
+				{
+					"command": "google.datacloud.deleteGcsFolder",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsFolder"
+				},
+				{
+					"command": "google.datacloud.createBucketGcsFolder",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsBucket"
+				},
+				{
+					"command": "google.datacloud.uploadBucketGcsFile",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsBucket"
+				},
+				{
+					"command": "google.datacloud.createGcsBucket",
+					"when": "activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.openGcsFile",
+					"when": "(activeViewlet == cloudStorageContainer || view.cloudStorageExplorer.visible || view.datacloud-explorer-view.visible) && datacloud.gcs.selectionIsFile"
+				},
+				{
+					"command": "google.datacloud.pipelines.refreshExplorer",
+					"when": "activeViewlet == orchestration-pipeline-container || view.orchestration-pipeline-view.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshExplorer",
+					"when": "activeViewlet == bigquery || view.bigquery-explorer.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshSparkResourceTree",
+					"when": "activeViewlet == spark-resource-tree || view.spark-resource-tree.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshClusters",
+					"when": "activeViewlet == spark-resource-tree || view.spark-resource-tree.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshServerless",
+					"when": "activeViewlet == spark-resource-tree || view.spark-resource-tree.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.dataplex.refreshUniversalCatalog",
+					"when": "activeViewlet == dataplex-universal-catalog || view.dataplex-universal-catalog-tree.visible || view.datacloud-explorer-view.visible"
+				},
+				{
+					"command": "google.datacloud.spark.session.details",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.job.details",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInProject",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigLake",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigLakeCatalog",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigLakeNamespace",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigQuery",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigQueryDataset",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInSpanner",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInSpannerInstance",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInSpannerDatabase",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDb",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDbCluster",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDbDatabase",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSql",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSqlInstance",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSqlDatabase",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSqlSchema",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.universalSearch",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.agent.skills.installGlobal",
+					"when": "gDataCloud.agent.skills.available"
+				},
+				{
+					"command": "google.datacloud.agent.skills.installWorkspace",
+					"when": "gDataCloud.agent.skills.available"
+				},
+				{
+					"command": "google.datacloud.agent.skills.uninstallGlobal",
+					"when": "gDataCloud.agent.skills.available"
+				},
+				{
+					"command": "google.datacloud.agent.skills.uninstallWorkspace",
+					"when": "gDataCloud.agent.skills.available"
+				},
+				{
+					"command": "google.datacloud.agent.skills.view",
+					"when": "gDataCloud.agent.skills.available"
+				},
+				{
+					"command": "google.datacloud.spark.clusters.listClusters.menu",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.listRuntimes.menu",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.databases.query.spanner.create",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"command": "google.datacloud.databases.query.alloydb.create",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"command": "google.datacloud.databases.query.cloudsql.create",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"command": "google.datacloud.bigquery.query.new",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.chat",
+					"when": "conversationalAnalytics.isEnabled"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.chatEditor",
+					"when": "conversationalAnalytics.isEnabled"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.runDiagnostics",
+					"when": "conversationalAnalytics.isEnabled"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.chatTable",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.chatDataset",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.sqleditor.runQuery",
+					"when": "resourceLangId == sql && !datacloud.isQueryRunning"
+				},
+				{
+					"command": "google.datacloud.sqleditor.cancelQuery",
+					"when": "resourceLangId == sql && datacloud.isQueryRunning && datacloud.currentDatabaseSupportsCancellation"
+				},
+				{
+					"command": "google.datacloud.sqleditor.queryRunning",
+					"when": "resourceLangId == sql && datacloud.isQueryRunning && !datacloud.currentDatabaseSupportsCancellation"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings",
+					"when": "resourceLangId == sql && (datacloud.currentDatabaseService == '' || datacloud.currentDatabaseService == 'UNKNOWN') && !datacloud.isQueryRunning"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.bigquery",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'BIG_QUERY' && !datacloud.isQueryRunning"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.spanner",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'SPANNER' && !datacloud.isQueryRunning"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.alloydb",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'ALLOYDB' && !datacloud.isQueryRunning"
+				},
+				{
+					"command": "google.datacloud.openQuerySettings.cloudsql",
+					"when": "resourceLangId == sql && datacloud.currentDatabaseService == 'CLOUD_SQL' && !datacloud.isQueryRunning"
+				},
+				{
+					"command": "google.datacloud.auth.signIn",
+					"when": "!datacloud.signedIn"
+				},
+				{
+					"command": "google.datacloud.auth.signOut",
+					"when": "datacloud.signedIn"
+				},
+				{
+					"command": "google.datacloud.view.catalog",
+					"when": "config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.view.gcs",
+					"when": "config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.view.bigquery",
+					"when": "config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.view.spark",
+					"when": "config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.view.pipelines",
+					"when": "config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.view.databases",
+					"when": "config.google.datacloud.expandMenus && datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements"
+				},
+				{
+					"command": "google.datacloud.pinSettings",
+					"when": "!config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.unpinSettings",
+					"when": "config.google.datacloud.expandMenus"
+				},
+				{
+					"command": "google.datacloud.bigquery.orchestrationPipeline.showDag",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.bigquery.orchestrationPipeline.addTask",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.bigquery.orchestrationPipeline.deleteTask",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.insertResourceAtCursor",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.bigquery.datatransfer.enable",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.bigquery.datatransfer.disable",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResource",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResourceWithBigQueryDataFramesNotebook",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResourceWithPandasNotebook",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResourceWithSparkNotebook",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.openCatalogDetails",
+					"when": "false"
+				},
+				{
+					"command": "google.datacloud.dataplex.copyResourceId",
+					"when": "false"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "google.datacloud.dataplex.queryResource",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements && view =~ /^(bigquery-explorer|dataplex-universal-catalog-tree|datacloud-explorer-view)$/ && viewItem =~ /^(dataplex-(spanner|alloydb|cloudsql)-system|(dataplex-)?bq-(table|view)|spanner-(instance|database|table|view)|alloydb-(cluster|database|table|view)|cloudsql-(instance(-MYSQL|-POSTGRESQL)?|database(-MYSQL|-POSTGRESQL)?|table|view)|lakehouse-table)$/",
+					"group": "inline@3"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshJobs",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-jobs-root",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshDatasets",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && (viewItem == bq-datasets-root || viewItem == bq-project || viewItem == bq-dataset || viewItem == bq-graphs-root)",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshQueries",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-queries-root",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshDataTransfers",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-data-transfers-root",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.bigquery.datatransfer.enable",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-data-transfer-disabled"
+				},
+				{
+					"command": "google.datacloud.bigquery.datatransfer.disable",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-data-transfer-enabled"
+				},
+				{
+					"command": "google.datacloud.bigquery.savedquery.rename",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-saved-query",
+					"group": "1_edit"
+				},
+				{
+					"command": "google.datacloud.bigquery.savedquery.download",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-saved-query",
+					"group": "2_download"
+				},
+				{
+					"command": "google.datacloud.bigquery.savedquery.delete",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && viewItem == bq-saved-query",
+					"group": "3_delete"
+				},
+				{
+					"command": "google.datacloud.bigquery.orchestrationPipeline.createNew",
+					"when": "(view == orchestration-pipeline-view || view == datacloud-explorer-view) && viewItem == orchestration-pipelines-root",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.dataplex.insertResourceAtCursor",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem =~ /^(dataplex-)?bq-(table|view)$/ || viewItem == bq-column || viewItem == lakehouse-table || viewItem == lakehouse-column || viewItem == spanner-table || viewItem == spanner-view || viewItem == spanner-table-column || viewItem == spanner-view-column || viewItem == alloydb-table || viewItem == alloydb-view || viewItem == alloydb-table-column || viewItem == alloydb-view-column || viewItem == cloudsql-table || viewItem == cloudsql-view || viewItem == cloudsql-table-column || viewItem == cloudsql-view-column)",
+					"group": "inline@1"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.chatTable",
+					"when": "conversationalAnalytics.isEnabled && (view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem =~ /^(dataplex-)?bq-(table|view)$/",
+					"group": "inline@2"
+				},
+				{
+					"command": "google.datacloud.conversationalAnalytics.chatDataset",
+					"when": "conversationalAnalytics.isEnabled && (view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == bq-dataset || viewItem == dataplex-bq-dataset)",
+					"group": "inline@2"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.submitJob",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster-running/",
+					"group": "1_actions@1"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.jobs",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster/",
+					"group": "1_actions@2"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.sparkUi",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster-.*-with-ui/",
+					"group": "1_actions@3"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.stop",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster-running/",
+					"group": "1_actions@4"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.start",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster-stopped/",
+					"group": "1_actions@5"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.restart",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster-running/",
+					"group": "1_actions@6"
+				},
+				{
+					"command": "google.datacloud.spark.cluster.profile",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem =~ /spark-cluster/",
+					"group": "1_actions@7"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.newNotebook",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == spark-serverless",
+					"group": "1_actions@0"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.profile",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == spark-serverless",
+					"group": "1_actions@1"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.interactiveSessions",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == spark-serverless",
+					"group": "1_actions@2"
+				},
+				{
+					"command": "google.datacloud.renameGcsFile",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-file/",
+					"group": "1_edit"
+				},
+				{
+					"command": "google.datacloud.copyGcsPath",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && (viewItem =~ /^gs-file/ || viewItem =~ /^gs-folder/ || viewItem == bucket)",
+					"group": "copy"
+				},
+				{
+					"command": "google.datacloud.copyGcsPath",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && (viewItem =~ /^gs-file/ || viewItem =~ /^gs-folder/ || viewItem == bucket)",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.deleteGcsFile",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-file/",
+					"group": "2_delete"
+				},
+				{
+					"command": "google.datacloud.downloadGcsFile",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-file/",
+					"group": "3_download"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.loadInSparkNotebook",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /:spark$/ && datacloud_vscode.overrides.datacloudSparkEnableLoadInSparkDataframeFromGcs",
+					"group": "4_load@1"
+				},
+				{
+					"command": "google.datacloud.createGcsFolder",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-folder/",
+					"group": "1_create"
+				},
+				{
+					"command": "google.datacloud.uploadGcsFile",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-folder/",
+					"group": "2_upload"
+				},
+				{
+					"command": "google.datacloud.renameGcsFolder",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-folder:hns/",
+					"group": "3_rename"
+				},
+				{
+					"command": "google.datacloud.deleteGcsFolder",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem =~ /^gs-folder/",
+					"group": "4_delete"
+				},
+				{
+					"command": "google.datacloud.createBucketGcsFolder",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem == bucket",
+					"group": "1_create"
+				},
+				{
+					"command": "google.datacloud.uploadBucketGcsFile",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && viewItem == bucket",
+					"group": "2_upload"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.refreshExplorer",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && (viewItem =~ /^gs-folder/ || viewItem == bucket)",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResource",
+					"when": "!datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements && (view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == bq-table || viewItem == bq-view || viewItem == dataplex-bq-table || viewItem == dataplex-bq-view || viewItem == lakehouse-table || viewItem == spanner-table || viewItem == spanner-view || viewItem == alloydb-table || viewItem == alloydb-view || viewItem == cloudsql-table || viewItem == cloudsql-view)",
+					"group": "1_query@1"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResource",
+					"when": "datacloud_vscode.overrides.datacloudDatabasesDiscoverabilityImprovements && view =~ /^(bigquery-explorer|dataplex-universal-catalog-tree|datacloud-explorer-view)$/ && viewItem =~ /^(dataplex-(spanner|alloydb|cloudsql)-system|(dataplex-)?bq-(table|view)|spanner-(instance|database|table|view)|alloydb-(cluster|database|table|view)|cloudsql-(instance(-MYSQL|-POSTGRESQL)?|database(-MYSQL|-POSTGRESQL)?|table|view)|lakehouse-table)$/",
+					"group": "1_query@1"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshDatasets",
+					"when": "(view == bigquery-explorer || view == datacloud-explorer-view) && (viewItem == bq-table || viewItem == bq-view)",
+					"group": "1_query@2"
+				},
+				{
+					"command": "google.datacloud.dataplex.refreshUniversalCatalog",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == dataplex-bq-table || viewItem == dataplex-bq-view || viewItem == lakehouse-table || viewItem == spanner-table || viewItem == spanner-view || viewItem == alloydb-table || viewItem == alloydb-view || viewItem == cloudsql-table || viewItem == cloudsql-view)",
+					"group": "1_query@2"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResourceWithSparkNotebook",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == bq-table || viewItem == bq-view || viewItem == dataplex-bq-table || viewItem == dataplex-bq-view || viewItem == lakehouse-table)",
+					"group": "2_load@1"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResourceWithBigQueryDataFramesNotebook",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == bq-table || viewItem == bq-view || viewItem == dataplex-bq-table || viewItem == dataplex-bq-view || viewItem == lakehouse-table)",
+					"group": "2_load@2"
+				},
+				{
+					"command": "google.datacloud.dataplex.queryResourceWithPandasNotebook",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == bq-table || viewItem == bq-view || viewItem == dataplex-bq-table || viewItem == dataplex-bq-view || viewItem == lakehouse-table)",
+					"group": "2_load@3"
+				},
+				{
+					"command": "google.datacloud.dataplex.copyResourceId",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == dataplex-bq-dataset || viewItem == bq-dataset || viewItem == bq-table || viewItem == bq-view || viewItem == dataplex-bq-table || viewItem == dataplex-bq-view || viewItem == lakehouse-table || viewItem == spanner-table || viewItem == spanner-view || viewItem == alloydb-table || viewItem == alloydb-view || viewItem == cloudsql-table || viewItem == cloudsql-view)",
+					"group": "3_copy"
+				},
+				{
+					"command": "google.datacloud.dataplex.refreshUniversalCatalog",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == dataplex-project || viewItem == dataplex-lakehouse-system || viewItem == lakehouse-catalog || viewItem == lakehouse-namespace || viewItem == dataplex-bigquery-system || viewItem == dataplex-bq-dataset || viewItem == dataplex-bq-graphs-root || viewItem == dataplex-spanner-system || viewItem == spanner-instance || viewItem == spanner-folder || viewItem == dataplex-alloydb-system || viewItem == alloydb-cluster || viewItem == alloydb-database || viewItem == alloydb-database-folder || viewItem == dataplex-cloudsql-system || viewItem == cloudsql-instance-MYSQL || viewItem == cloudsql-instance-POSTGRESQL || viewItem == cloudsql-database-POSTGRESQL || viewItem == cloudsql-tables-root || viewItem == cloudsql-views-root)",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInProject",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == dataplex-project || viewItem == bq-project)",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigLake",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == dataplex-lakehouse-system",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigLakeCatalog",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == lakehouse-catalog",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigLakeNamespace",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == lakehouse-namespace",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigQuery",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == dataplex-bigquery-system || viewItem == bq-datasets-root)",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInBigQueryDataset",
+					"when": "(view == bigquery-explorer || view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == dataplex-bq-dataset || viewItem == bq-dataset)",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInSpanner",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == dataplex-spanner-system",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInSpannerInstance",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == spanner-instance",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInSpannerDatabase",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == spanner-database",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDb",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == dataplex-alloydb-system",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDbCluster",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == alloydb-cluster",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDbDatabase",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == alloydb-database",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInAlloyDbSchema",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == alloydb-schema",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSql",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == dataplex-cloudsql-system",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSqlInstance",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == cloudsql-instance-MYSQL || viewItem == cloudsql-instance-POSTGRESQL)",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSqlDatabase",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && (viewItem == cloudsql-database-MYSQL || viewItem == cloudsql-database-POSTGRESQL)",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.findInCloudSqlSchema",
+					"when": "(view == dataplex-universal-catalog-tree || view == datacloud-explorer-view) && viewItem == cloudsql-schema",
+					"group": "1_search"
+				},
+				{
+					"command": "google.datacloud.dataplex.refreshUniversalCatalogAll",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-catalog",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.refreshExplorer",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-gcs",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.filter",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-gcs && !google.datacloud.cloudStorage.isFiltered",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.filterActive",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-gcs && google.datacloud.cloudStorage.isFiltered",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.createGcsBucket",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-gcs",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshSparkResourceTree",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-spark",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshClusters",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == dataproc-clusters-header",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshServerless",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == dataproc-serverless-header",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.pipelines.refreshExplorer",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-pipelines",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshExplorer",
+					"when": "view == datacloud-explorer-view && viewItem == datacloud-section-bigquery",
+					"group": "inline"
+				},
+				{
+					"command": "google.datacloud.spark.serverless.listRuntimes.menu",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == dataproc-serverless-header",
+					"group": "1_actions"
+				},
+				{
+					"command": "google.datacloud.spark.clusters.listClusters.menu",
+					"when": "(view == spark-resource-tree || view == datacloud-explorer-view) && viewItem == dataproc-clusters-header",
+					"group": "1_actions"
+				}
+			],
+			"view/title": [
+				{
+					"command": "google.datacloud.dataplex.refreshUniversalCatalogAll",
+					"when": "view == dataplex-universal-catalog-tree",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.bigquery.refreshExplorer",
+					"when": "view == bigquery-explorer",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.pipelines.refreshExplorer",
+					"when": "view == orchestration-pipeline-view",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.dataproc.refreshSparkResourceTree",
+					"when": "view == spark-resource-tree",
+					"group": "navigation"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.refreshExplorer",
+					"when": "view == cloudStorageExplorer || view == datacloud-explorer-view",
+					"group": "navigation@1"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.filter",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && !google.datacloud.cloudStorage.isFiltered",
+					"group": "navigation@2"
+				},
+				{
+					"command": "google.datacloud.cloudStorage.filterActive",
+					"when": "(view == cloudStorageExplorer || view == datacloud-explorer-view) && google.datacloud.cloudStorage.isFiltered",
+					"group": "navigation@2"
+				},
+				{
+					"command": "google.datacloud.createGcsBucket",
+					"when": "view == cloudStorageExplorer",
+					"group": "navigation@3"
+				},
+				{
+					"command": "google.datacloud.pinSettings",
+					"when": "view == datacloud-explorer-view",
+					"group": "navigation@98",
+					"icon": "$(pin)"
+				},
+				{
+					"command": "google.datacloud.unpinSettings",
+					"when": "view == datacloud-settings-view",
+					"group": "navigation@99",
+					"icon": "$(pinned)"
+				}
+			]
+		},
+		"configurationDefaults": {
+			"jupyter.widgetScriptSources": [
+				"jsdelivr.com",
+				"unpkg.com"
+			]
+		},
+		"configuration": {
+			"title": "Google Cloud Data Agent Kit",
+			"type": "object",
+			"properties": {
+				"google.datacloud.expandMenus": {
+					"type": "boolean",
+					"default": false,
+					"description": "Expand tree view items by default."
+				},
+				"google.datacloud.recentProjectsEnabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable recent projects in project switcher."
+				},
+				"google.datacloud.project": {
+					"type": "string",
+					"default": "placeholder",
+					"description": "Enter a Google Cloud project to use for the Data-Cloud extension",
+					"deprecationMessage": "Don't use this setting anymore! Use 'google.cloud.project'"
+				},
+				"google.datacloud.enableTelemetry": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable usage and error reporting for the Google Cloud Data Agent Kit extension. Data collected is subject to the [Google Privacy Policy](https://policies.google.com/privacy)."
+				},
+				"google.datacloud.starredProjects": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "A list of starred project IDs"
+				},
+				"google.cloud.project": {
+					"type": "string",
+					"default": "",
+					"description": "Enter a Google Cloud project to use for the Data-Cloud extension"
+				},
+				"google.cloud.billingQuotaProject": {
+					"type": "string",
+					"default": "",
+					"description": "The Google Cloud project used for billing and quota purposes. If empty, the main project is used."
+				},
+				"google.datacloud.gcloudPath": {
+					"type": "string",
+					"default": "",
+					"description": "Filesystem path to the Google Cloud CLI executable (e.g. /usr/bin/gcloud)."
+				},
+				"google.datacloud.bigqueryRegion": {
+					"type": "string",
+					"default": "us",
+					"markdownDescription": "BigQuery dataset explorer location."
+				},
+				"google.datacloud.composer.project": {
+					"type": "string",
+					"default": "",
+					"description": "The Google Cloud project to use for Managed Service for Apache Airflow operations."
+				},
+				"google.datacloud.composer.region": {
+					"type": "string",
+					"default": "",
+					"description": "The region to use for Managed Service for Apache Airflow operations."
+				},
+				"google.datacloud.composer.environment": {
+					"type": "string",
+					"default": "",
+					"description": "The Managed Service for Apache Airflow environment to use for operations."
+				},
+				"google.cloud.region": {
+					"type": "string",
+					"default": "",
+					"description": "Enter a Google Cloud region to use for the Data-Cloud extension"
+				},
+				"google.datacloud.agent.skills.autoUpdate": {
+					"type": "boolean",
+					"default": true,
+					"description": "When enabled, skills are automatically updated."
+				},
+				"google.datacloud.agent.skills.installLocation": {
+					"type": "string",
+					"enum": [
+						"global",
+						"workspace"
+					],
+					"default": "global",
+					"description": "Choose whether agent skills should be installed globally or locally within the current workspace."
+				},
+				"google.datacloud.spark.notebooks.inCellMonitoringEnabled": {
+					"type": "boolean",
+					"scope": "application",
+					"default": true,
+					"description": "Enable in-cell monitoring"
+				},
+				"google.datacloud.executeCellToolForNotebookMCP": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable execute_cell tool for Notebook MCP. Requires restarting IDE after changing."
+				},
+				"google.datacloud.executeCellToolConsent": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable explicit user consent prompt before executing cells via execute_cell tool."
+				}
+			}
+		}
+	},
+	"extensionDependencies": [
+		"ms-toolsai.jupyter"
+	],
+	"devDependencies": {
+		"@types/vscode-jupyter": "latest"
+	},
+	"dependencies": {
+		"googleapis": "149.0.0",
+		"@cfworker/json-schema": "^4.1.1",
+		"@modelcontextprotocol/sdk": "^1.24.3",
+		"express": "^5.2.1",
+		"zod": "^4.1.13",
+		"@vscode/jupyter-extension": "^1.1.1"
+	},
+	"buildInfo": {
+		"BUILD_CLIENT": "build-secure-info:source-uri",
+		"BUILD_CLIENT_MINT_STATUS": "1",
+		"BUILD_DEPOT_PATH": "//depot/branches/datacloud_vscode_vsix_release_branch/978276340.1/google3",
+		"BUILD_DIRECTORY": "/google/src/cloud/buildrabbit-username/buildrabbit-client/google3",
+		"BUILD_USERNAME": "rbex-enqueue-targets",
+		"BUILD_BLAZE_RELEASE": "release blaze-2026.08.26-1 (mainline @970824112)",
+		"BUILD_EMBED_LABEL": "0.11_RC0",
+		"BUILD_HOSTNAME": "vngg5.prod.google.com",
+		"VERIFIABLE": "1",
+		"WORKSPACE_STATUS_COMMAND_ARGUMENT": "<precomputed>"
+	},
+	"__metadata": {
+		"installedTimestamp": 1789283986789,
+		"targetPlatform": "universal",
+		"size": 63763685
+	}
+}

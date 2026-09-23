@@ -1,0 +1,5 @@
+Cloud Software License Agreement
+
+This Data Cloud Software is subject to the Google Cloud Terms of Service, as
+modified by the "General Software Terms" of the Google Cloud Service Specific
+Terms, available at: https://cloud.google.com/terms/service-terms.

@@ -1,0 +1,72 @@
+modelVersion: "1.0"
+pipelineId: {{name}}
+description: ""
+runner: "airflow"
+owner: {{owner}}
+tags: []
+
+{{#if emailOnFailure}}
+  {{#if emails}}
+notifications:
+  onPipelineFailure:
+    email:
+      {{#each emails}}
+      - {{this}}
+      {{/each}}
+  {{/if}}
+{{/if}}
+
+defaults:
+  projectId: {{gcpProjectId}}
+  location: {{gcpRegion}}
+  executionConfig:
+    retries: {{retryCount}}
+
+triggers:
+  - schedule:
+      interval: {{scheduleInterval}}
+      startTime: "{{startDate}}"
+      endTime: "{{endDate}}"
+      catchup: false
+      timezone: {{timeZone}}
+
+actions:
+  - notebook:
+      name: {{name}}
+      mainFilePath: {{inputFilePath}}
+      {{#if requirementsFilePath}}
+      environment:
+        requirements:
+          path: "{{requirementsFilePath}}"
+      {{/if}}
+      {{#if archiveUris}}
+      archiveUris:
+        {{#each archiveUris}}
+        - "{{this}}"
+        {{/each}}
+      {{/if}}
+      engine:
+        dataprocServerless:
+          location: {{gcpRegion}}
+          resourceProfile:
+            inline:
+              environmentConfig:
+                execution_config:
+                  service_account: {{serviceAccount}}
+                  subnetwork_uri: {{subnetwork}}
+                  {{#if kmsKey}}
+                  kms_key: {{kmsKey}}
+                  {{/if}}
+              runtimeConfig:
+                version: "2.3"
+                {{#if pythonArtifactsRegistry}}
+                repository_config:
+                  pypi_repository_config:
+                    pypi_repository: {{pythonArtifactsRegistry}}
+                {{/if}}
+                properties:
+                  spark.app.name: {{name}}
+                  spark.executor.instances: "2"
+                  spark.driver.cores: "4"
+                  spark.dataproc.driverEnv.PYTHONPATH: "./libs/lib/python3.11/site-packages"
+                  spark.executorEnv.PYTHONPATH: "./libs/lib/python3.11/site-packages"

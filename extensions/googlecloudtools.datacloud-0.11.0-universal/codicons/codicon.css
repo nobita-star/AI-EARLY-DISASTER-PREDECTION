@@ -1,0 +1,29 @@
+/*
+ * TODO: b/462150697 - Figure this out.
+ *
+ * Currently this only exists as a placeholder for compatibility with the
+ * CloudCode AngularPanel component, which expects to find this file at runtime.
+ *
+ * It seems that other components at Google that want to use VSCode's codicon
+ * font get it from this file:
+ * http://google3/third_party/vscode/src/vs/base/common/codicons.ts;l=60;rcl=635804322
+ *
+ * From what I can tell, in order to use that file, we would need to also bundle
+ * in codicon.css and codicons.ttf, which can be done by depending on:
+ * http://google3/third_party/vscode/src/BUILD;l=173;rcl=834366688 (css)
+ * http://google3/third_party/vscode/src/vs/BUILD;l=416;rcl=820706998 (font)
+ *
+ * This is what the Cider frontend seems to do:
+ * - http://google3/devtools/cider/web/BUILD;l=164;rcl=834365374 (css)
+ * - http://google3/java/com/google/devtools/cider/frontend/ciderv/BUILD;l=227;rcl=833873415 (ttf)
+ *
+ * This is what the CodeSearch extension seems to do:
+ * - http://google3/devtools/cider/standalone/codesearch/BUILD;l=7;rcl=790644831
+ * - Relevant CSS: http://google3/devtools/cider/standalone/codesearch/src/search_webview/style.scss;l=9-13;rcl=834370515
+ * - More CSS: http://google3/devtools/cider/standalone/codesearch/src/search_input/_search_input.scss;l=2-28;rcl=810525956
+ *
+ *
+ *
+ * For reference, Microsoft's example extension is here:
+ * https://github.com/microsoft/vscode-extension-samples/tree/main/webview-codicons-sample
+ */

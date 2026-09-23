@@ -1,0 +1,66 @@
+{
+  "model_type": "XGBClassifier",
+  "ps_id": "260001",
+  "feature_columns": [
+    "rainfall_last_24h",
+    "forecasted_rainfall_next_6h",
+    "soil_saturation_index",
+    "dem_slope_degrees",
+    "river_water_level_m"
+  ],
+  "target_column": "actual_inundation_risk",
+  "metrics": {
+    "auc": 1.0,
+    "f1": 1.0,
+    "accuracy": 1.0
+  },
+  "feature_statistics": {
+    "rainfall_last_24h": {
+      "mean": 46.37167,
+      "std": 33.38033071420488,
+      "min": 0.61,
+      "max": 185.31,
+      "median": 38.129999999999995,
+      "p25": 21.8025,
+      "p75": 62.1725
+    },
+    "forecasted_rainfall_next_6h": {
+      "mean": 35.57986999999999,
+      "std": 22.8154175758907,
+      "min": 2.78,
+      "max": 140.0,
+      "median": 30.15,
+      "p25": 18.942500000000003,
+      "p75": 46.125
+    },
+    "soil_saturation_index": {
+      "mean": 0.5639561000000001,
+      "std": 0.16238493683374852,
+      "min": 0.1563,
+      "max": 0.9485,
+      "median": 0.577,
+      "p25": 0.44525,
+      "p75": 0.68965
+    },
+    "dem_slope_degrees": {
+      "mean": 20.48633,
+      "std": 11.730477651700166,
+      "min": 0.5,
+      "max": 53.45,
+      "median": 19.16,
+      "p25": 11.0375,
+      "p75": 29.085
+    },
+    "river_water_level_m": {
+      "mean": 5.91141,
+      "std": 1.516368717029597,
+      "min": 2.55,
+      "max": 11.8,
+      "median": 5.69,
+      "p25": 4.85,
+      "p75": 6.79
+    }
+  },
+  "shap_expected_value": -6.708387666204127,
+  "training_samples": 1000
+}

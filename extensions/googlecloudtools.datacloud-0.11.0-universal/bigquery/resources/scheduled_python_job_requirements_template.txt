@@ -1,0 +1,9 @@
+{{#if pythonArtifactsRegistry}}
+--index-url {{pythonArtifactsRegistry}}
+{{/if}}
+
+{{#if librariesToInstall}}
+{{#each librariesToInstall}}
+{{this}}
+{{/each}}
+{{/if}}

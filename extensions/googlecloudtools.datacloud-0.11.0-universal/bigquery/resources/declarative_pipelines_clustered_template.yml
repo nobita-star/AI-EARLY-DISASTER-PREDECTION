@@ -1,0 +1,46 @@
+modelVersion: "1.0"
+pipelineId: {{name}}
+description: ""
+runner: "airflow"
+owner: {{owner}}
+tags: []
+
+model_version: '1.0'
+{{#if emailOnFailure}}
+  {{#if emails}}
+notifications:
+  onPipelineFailure:
+    email:
+      {{#each emails}}
+      - {{this}}
+      {{/each}}
+  {{/if}}
+{{/if}}
+
+defaults:
+  projectId: {{gcpProjectId}}
+  location: {{gcpRegion}}
+  executionConfig:
+    retries: {{retryCount}}
+
+triggers:
+  - schedule:
+      interval: {{scheduleInterval}}
+      startTime: "{{startDate}}"
+      endTime: "{{endDate}}"
+      catchup: false
+      timezone: {{timeZone}}
+
+actions:
+  - notebook:
+      name: {{name}}
+      mainFilePath: {{inputFilePath}}
+      {{#if requirementsFilePath}}
+      environment:
+        requirements:
+          path: "{{requirementsFilePath}}"
+      {{/if}}
+      engine:
+        dataprocOnGce:
+          existingCluster:
+            clusterName: {{clusterName}}

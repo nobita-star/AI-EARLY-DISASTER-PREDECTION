@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+		<Metadata>
+			<Identity Language="en-US" Id="datacloud" Version="0.11.0" Publisher="googlecloudtools" />
+			<DisplayName>Google Cloud Data Agent Kit</DisplayName>
+			<Description xml:space="preserve">Bring the full power of Google Cloud Data Agent Kit (starter pack) to your intelligent IDE</Description>
+			<Tags>BigQuery,Looker,Spark,Dataproc,Pubsub,Dataflow,Alloydb,PostgreSQL,Cloud SQL,Firestore,Spanner,Spanner-graph,Sqlx,Notebook,Python,Bigtable,Datastream,Database Migration Service,Memorystore,Apache Flume,Apache Beam,Knowledge Catalog,Dataplex,Dataform,pipelines,DBT,Lakehouse,Iceberg,Cloud Code,Data transfer service,keybindings,sqlx,Dataform SQLX,__ext_sqlx,postgres,mysql,MySQL,dataplex-bq-table,__ext_bqtable,dataplex-bq-dataset,__ext_bqdataset,dataplex-bq-view,__ext_bqview,dataplex-lakehouse-table,__ext_lakehousetable,dataplex-spanner-table,__ext_spannertable,dataplex-spanner-database,__ext_spannerdatabase,dataplex-spanner-view,__ext_spannerview,dataplex-spanner-changestream,__ext_spannerchangestream,dataplex-spanner-model,__ext_spannermodel,dataplex-spanner-graph,__ext_spannergraph,dataplex-bigquery-graph,__ext_bqgraph,dataplex-alloydb-table,__ext_alloydbtable,dataplex-alloydb-view,__ext_alloydbview,dataplex-cloudsql-table,__ext_cloudsqltable,dataplex-cloudsql-view,__ext_cloudsqlview,dataproc-spark-cluster,__ext_sparkcluster,dataproc-spark-runtime,__ext_sparkruntime,dataproc-spark-job,__ext_sparkjob,dataproc-spark-batch,__ext_sparkbatch,dataproc-spark-session,__ext_sparksession</Tags>
+			<Categories></Categories>
+			<GalleryFlags>Public Preview</GalleryFlags>
+			
+			<Properties>
+				<Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.97.0" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionDependencies" Value="ms-toolsai.jupyter" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="" />
+				<Property Id="Microsoft.VisualStudio.Code.ExtensionKind" Value="workspace" />
+				<Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
+				
+				
+				
+				
+				
+				
+				<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+				
+				
+			</Properties>
+			<License>extension/LICENSE.txt</License>
+			<Icon>extension/images/datacloud_icon.png</Icon>
+		</Metadata>
+		<Installation>
+			<InstallationTarget Id="Microsoft.VisualStudio.Code"/>
+		</Installation>
+		<Dependencies/>
+		<Assets>
+			<Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+			<Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE.txt" Addressable="true" />
+<Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/images/datacloud_icon.png" Addressable="true" />
+		</Assets>
+	</PackageManifest>
