@@ -1538,9 +1538,17 @@
 
   <!-- ======================================================================== -->
   <!-- JAVASCRIPT: MAPS, TELEMETRY, DEMO & TIME-SERIES                          -->
-  <!-- ======================================================================== -->
   <script>
-    const API_BASE = window.location.origin;
+    // Production dynamic API base resolution (supports independent hosting or Render-served)
+    const getApiBase = () => {
+      try {
+        const stored = localStorage.getItem('DISASTER_BACKEND_API_URL');
+        if (stored && stored.trim() !== '') return stored.trim().replace(/\/+$/, '');
+        if (window.__BACKEND_API_URL__) return window.__BACKEND_API_URL__.replace(/\/+$/, '');
+      } catch (e) {}
+      return window.location.origin;
+    };
+    const API_BASE = getApiBase();
 
     // State Variables
     let map = null;

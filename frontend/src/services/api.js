@@ -21,12 +21,17 @@ export const getDefaultBackendUrl = () => {
     return envUrl.trim().replace(/\/+$/, '');
   }
 
-  // 3. In cloud production (e.g. Vercel) if no env var is provided, fallback to relative origin or empty
+  // 3. Check runtime window configuration if provided
+  if (typeof window !== 'undefined' && window.__DISASTER_BACKEND_URL__) {
+    return window.__DISASTER_BACKEND_URL__.replace(/\/+$/, '');
+  }
+
+  // 4. In cloud production (e.g. Vercel) if no env var is provided, fallback to relative origin or empty
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
     return '';
   }
 
-  // 4. Local development default
+  // 5. Local development default
   return 'http://localhost:8000';
 };
 
@@ -64,9 +69,13 @@ const fetchWithTimeout = async (url, options = {}, timeoutMs = 12000) => {
 export const api = {
   async checkHealth(baseUrl = null) {
     const root = (baseUrl || getDefaultBackendUrl()).replace(/\/+$/, '');
-    const res = await fetchWithTimeout(`${root}/health`, { method: 'GET' }, 6000);
+    const res = await fetchWithTimeout(`${root}/health`, { method: 'GET' }, 8000);
     if (!res.ok) {
       throw new Error(`Health check returned HTTP ${res.status}`);
+    }
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error('API returned HTML instead of JSON. Configure your Render backend URL in the ConfigBar above or set VITE_BACKEND_API_URL.');
     }
     return await res.json();
   },
@@ -76,6 +85,10 @@ export const api = {
     const res = await fetchWithTimeout(`${root}/api/v1/system/status`, { method: 'GET' });
     if (!res.ok) {
       throw new Error(`Failed fetching status: HTTP ${res.status}`);
+    }
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error('API returned non-JSON response. Please verify backend URL.');
     }
     return await res.json();
   },

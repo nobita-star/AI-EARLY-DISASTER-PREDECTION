@@ -16,10 +16,12 @@ Endpoints:
 import os
 import sys
 
-# Ensure backend directory is in sys.path so 'src' can be imported whether run from root or backend
+# Ensure both backend directory and root directory are in sys.path
 backend_dir = os.path.dirname(os.path.abspath(__file__))
-if backend_dir not in sys.path:
-    sys.path.insert(0, backend_dir)
+root_dir = os.path.dirname(backend_dir)
+for p in [backend_dir, root_dir]:
+    if p and p not in sys.path:
+        sys.path.insert(0, p)
 
 import uuid
 import math

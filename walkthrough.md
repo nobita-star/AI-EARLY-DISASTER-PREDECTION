@@ -107,3 +107,141 @@ python frontend_dev_server.py
 ```
 - Open in Browser: [http://localhost:5173](http://localhost:5173)
 - Fully proxied to `http://localhost:8000` with active CORS handling.
+
+---
+
+## 6. Verified Production Deployment Guide (Render + Vercel)
+
+The codebase has been decoupled and prepared for **independent, zero-localhost-dependent cloud deployments**:
+- **Backend**: Deployed independently as a Python Web Service on **Render**.
+- **Frontend**: Deployed independently as a high-performance SPA on **Vercel Edge Network**.
+
+### Architecture & Decoupling Matrix
+| Dimension | Render Backend Service | Vercel Frontend Client |
+| :--- | :--- | :--- |
+| **Service Type** | FastAPI ASGI Web Service | React 18 + Vite SPA |
+| **Target URL** | `https://landscape-risk-intelligence-api.onrender.com` | `https://landscape-risk-intelligence.vercel.app` |
+| **Build Command** | `pip install -r requirements.txt` | `npm run build` (or root `npm --prefix frontend run build`) |
+| **Start Command** | `uvicorn backend.main:app --host 0.0.0.0 --port $PORT` | Static Edge Delivery (`dist` or `frontend/dist`) |
+| **Health Probe** | `GET /health` (HTTP 200) | Edge CDN Cache & SPA Fallback (`index.html`) |
+| **Environment Keys**| `PYTHON_VERSION=3.11.9`, `CORS_ORIGINS=*` | `VITE_BACKEND_API_URL=https://<your-render-url>.onrender.com` |
+| **CORS Policy** | Whitelists `*` and regex `^https?://.*\.vercel\.app$` | Initiates cross-origin fetch to Render API |
+
+---
+
+### Step-by-Step Render Deployment Guide (Backend)
+
+#### Option 1: One-Click Render Blueprint (Recommended)
+1. Push your repository to GitHub.
+2. Log in to [Render Dashboard](https://dashboard.render.com).
+3. Click **New +** > **Blueprint**.
+4. Connect your GitHub repository.
+5. Render will automatically detect [`render.yaml`](file:///c:/Users/HP%20640%20G8/.antigravity-ide/render.yaml) and configure:
+   - **Service Name**: `landscape-risk-intelligence-api`
+   - **Runtime**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+   - **Health Check Path**: `/health`
+   - **Environment Variables**: `PYTHON_VERSION=3.11.9`, `CORS_ORIGINS=*`
+6. Click **Apply**.
+7. Once deployed, note down your Render Web Service URL (e.g. `https://landscape-risk-intelligence-api.onrender.com`).
+
+#### Option 2: Manual Web Service Setup
+1. On Render Dashboard, click **New +** > **Web Service**.
+2. Select **Build and deploy from a Git repository** and connect your repo.
+3. Configure the following fields:
+   - **Name**: `landscape-risk-intelligence-api`
+   - **Language**: `Python 3`
+   - **Branch**: `main` (or your active branch)
+   - **Root Directory**: `.` (leave empty or dot)
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+   - **Instance Type**: `Free`
+4. Expand **Advanced** > **Add Environment Variable**:
+   - `PYTHON_VERSION` = `3.11.9`
+   - `CORS_ORIGINS` = `*`
+   - **Health Check Path** = `/health`
+5. Click **Create Web Service**.
+
+---
+
+### Step-by-Step Vercel Deployment Guide (Frontend)
+
+#### Option 1: Isolated Frontend Directory (Recommended)
+1. Log in to [Vercel Dashboard](https://vercel.com).
+2. Click **Add New...** > **Project** and select your GitHub repository.
+3. In the **Configure Project** screen:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click *Edit* and select `frontend`
+   - **Build Command**: `npm run build` (automatic)
+   - **Output Directory**: `dist` (automatic)
+4. Expand **Environment Variables**:
+   - **Key**: `VITE_BACKEND_API_URL`
+   - **Value**: `https://<your-render-service-name>.onrender.com` (your deployed Render URL from above, without trailing slash)
+5. Click **Deploy**.
+
+#### Option 2: Monorepo Root Deployment
+1. Import repository on Vercel and leave Root Directory as `./`.
+2. Vercel automatically reads [`vercel.json`](file:///c:/Users/HP%20640%20G8/.antigravity-ide/vercel.json) from the root:
+   - Build Command: `npm --prefix frontend install && npm --prefix frontend run build`
+   - Output Directory: `frontend/dist`
+3. Add environment variable:
+   - `VITE_BACKEND_API_URL` = `https://<your-render-service-name>.onrender.com`
+4. Click **Deploy**.
+
+---
+
+### In-Browser Dynamic API Switcher (Fail-Safe)
+If the Vercel frontend is launched before the Render backend is live, or if a judge wants to test against another backend:
+- The top **Tactical Configuration Bar** in the frontend provides an interactive `API ENDPOINT` input.
+- Paste any deployed Render URL into the box and click **Connect**.
+- The URL is saved in `localStorage['DISASTER_BACKEND_API_URL']` and automatically tested via `/health`.
+- If the endpoint returns HTML (such as an unconfigured Vercel SPA rewrite), the UI displays a clear instructional banner rather than throwing a silent JSON parsing error.
+
+---
+
+### 7. Production Verification Evidence
+Executed and verified via [`scratch/verify_production_readiness.py`](file:///c:/Users/HP%20640%20G8/.antigravity-ide/scratch/verify_production_readiness.py):
+
+```text
+======================================================================
+VERIFICATION: INDEPENDENT PRODUCTION DEPLOYMENT READINESS
+======================================================================
+
+--- 1. CONFIGURATION & SPECIFICATION FILES ---
+[PASS] Render Infrastructure as Code Blueprint -> render.yaml
+[PASS] Render / Heroku Procfile -> Procfile
+[PASS] Root Python Dependencies -> requirements.txt
+[PASS] Backend Python Dependencies -> backend/requirements.txt
+[PASS] FastAPI Production Backend Entrypoint -> backend/main.py
+[PASS] Calibrated XGBoost Model -> backend/models/calibrated_landscape_xgb.joblib
+[PASS] Trained Model Calibration Metadata -> backend/models/model_metadata.json
+[PASS] Vercel / Vite Frontend Package Spec -> frontend/package.json
+[PASS] Vercel Frontend Project Configuration -> frontend/vercel.json
+[PASS] Root Monorepo Vercel Configuration -> vercel.json
+[PASS] Vite Production Build Config -> frontend/vite.config.js
+[PASS] Production Dynamic API Client -> frontend/src/services/api.js
+[PASS] Vercel Production Environment File -> frontend/.env.production
+
+--- 2. PRODUCTION CODE LOCALHOST INDEPENDENCE AUDIT ---
+[PASS] frontend/src/services/api.js contains dynamic cloud resolution & avoids hardcoded localhost in cloud.
+
+--- 3. ML MODEL & PIPELINE INTEGRITY ---
+[PASS] Successfully loaded trained model: CalibratedClassifierCV
+[PASS] Model ROC-AUC: 0.9745 | Brier: 0.0411
+
+--- 4. LIVE BACKEND ENDPOINT & CORS HEADERS TEST ---
+[PASS] GET /health returned status=200 data={'status': 'ok'}
+[PASS] OPTIONS preflight from https://disaster-intelligence-early-warning.vercel.app: HTTP 200, Allow-Origin=*
+[PASS] POST /api/v1/predict returned HTTP 200
+       CORS Header: *
+       Risk Percentage: 68.59% (HIGH)
+       Top SHAP Feature: slope
+       Rainfall Risk: 66.2% (HIGH)
+[PASS] GET /api/v1/system/status returned HTTP 200 | status=ONLINE
+
+======================================================================
+ALL VERIFICATION CHECKS PASSED: READY FOR RENDER + VERCEL DEPLOYMENT
+======================================================================
+```
+

@@ -31,7 +31,10 @@ from sklearn.metrics import (
 from sklearn.calibration import CalibratedClassifierCV
 from xgboost import XGBClassifier
 
-from backend.src.services.feature_service import MODEL_FEATURE_COLUMNS
+try:
+    from backend.src.services.feature_service import MODEL_FEATURE_COLUMNS
+except ImportError:
+    from src.services.feature_service import MODEL_FEATURE_COLUMNS
 
 MODEL_OUTPUT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "calibrated_landscape_xgb.joblib")
 METADATA_OUTPUT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "model_metadata.json")
