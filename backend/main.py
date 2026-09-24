@@ -56,6 +56,7 @@ from src.remote_sensing import GEERemoteSensingClient, USGSEarthExplorerClient
 from src.alerts import RegisteredUserStore, NotificationService
 from src.services.feature_service import FeatureService
 from src.services.forecast_service import ForecastService
+from src.services.impact_assessment import GeospatialImpactAssessmentService
 
 # --------------------------------------------------------------------------
 # 1. Structured Logging Configuration
@@ -450,6 +451,21 @@ INDIAN_CATCHMENT_PRESETS: List[Dict[str, Any]] = [
 ]
 
 
+def _safe_float(val: Any, default: float = 0.0) -> float:
+    """Safe float conversion preventing NoneType/NaN crashes from external sensors."""
+    if val is None:
+        return default
+    try:
+        if isinstance(val, (int, float)):
+            if math.isnan(val) or math.isinf(val):
+                return default
+            return float(val)
+        res = float(val)
+        return default if (math.isnan(res) or math.isinf(res)) else res
+    except (ValueError, TypeError):
+        return default
+
+
 def generate_inundation_geojson(
     lat: float,
     lon: float,
@@ -582,6 +598,8 @@ class PredictionOutput(BaseModel):
     diagnostics: Dict[str, Any]
     inundation_polygon: Optional[Dict[str, Any]] = None
     spatial_metrics: Optional[Dict[str, Any]] = None
+    impact_assessment: Optional[Dict[str, Any]] = None
+    impact_data_source: Optional[Dict[str, Any]] = None
     civil_defense_advisory: Optional[Dict[str, Any]] = None
     rainfall_risk: Optional[Dict[str, Any]] = None
     eight_hour_forecast: Optional[Dict[str, Any]] = None
@@ -666,6 +684,7 @@ class ServiceState:
     physics_sim: PhysicsInspiredMVPSimulator = None  # type: ignore
     scenario_eng: ScenarioEngine = None  # type: ignore
     validation_eng: SatelliteValidationEngine = None  # type: ignore
+    impact_service: GeospatialImpactAssessmentService = None  # type: ignore
     gee_client: Any = None
     usgs_client: Any = None
     user_store: Any = None
@@ -748,6 +767,13 @@ async def lifespan(app: FastAPI):
         state.notif_service = NotificationService()
     except Exception as e:
         logger.warning(f"Notification service fallback: {e}")
+
+    # 9. Geospatial Impact Assessment Service
+    try:
+        state.impact_service = GeospatialImpactAssessmentService()
+        logger.info("[Lifecycle] Initialized Geospatial Impact Assessment Service.")
+    except Exception as e:
+        logger.warning(f"Impact assessment service init fallback: {e}")
 
     state.is_ready = True
     logger.info("All engines ready (XGBoost + DL + GEE + PostGIS Geofencing). Serving requests.")
@@ -1728,8 +1754,8 @@ def predict_risk(payload: PredictionInput):
         top_feature, contributions, base_val = state.explainer_eng.explain_prediction(features_df)
 
         data_source = feat_metadata.get("data_mode", "LIVE").lower()
-        slope_val = float(features_df["slope"].iloc[0])
-        river_val = payload.river_level if payload.river_level is not None else 2.5
+        slope_val = _safe_float(features_df["slope"].iloc[0] if "slope" in features_df.columns else payload.slope, default=2.0)
+        river_val = _safe_float(payload.river_level, default=2.5)
 
         inundation_geojson = generate_inundation_geojson(
             lat=lat,
@@ -1745,11 +1771,64 @@ def predict_risk(payload: PredictionInput):
             river_level=river_val
         )
 
+        elev_val = _safe_float(features_df["elevation"].iloc[0] if "elevation" in features_df.columns else payload.elevation, default=50.0)
+        ndvi_val = _safe_float(features_df["ndvi"].iloc[0] if "ndvi" in features_df.columns else payload.vegetation_index, default=0.52)
+
+        # 4. DYNAMIC GEOSPATIAL IMPACT ASSESSMENT
+        # Calculates: Affected Land Area, Population Exposed, Agricultural at Risk, Roads Interrupted
+        impact_assessment = {}
+        impact_data_source = {}
+        try:
+            impact_engine = getattr(state, "impact_service", None)
+            if not impact_engine:
+                from src.services.impact_assessment import GeospatialImpactAssessmentService
+                impact_engine = GeospatialImpactAssessmentService()
+            impact_res = impact_engine.assess_impact(
+                risk_polygon=inundation_geojson,
+                lat=lat,
+                lon=lon,
+                risk_pct=risk_pct,
+                risk_level=category,
+                slope=slope_val,
+                elevation=elev_val,
+                ndvi=ndvi_val,
+                catchment_id=payload.catchment_id or "CUSTOM_SECTOR"
+            )
+            impact_assessment = impact_res["impact_assessment"]
+            impact_data_source = impact_res["impact_data_source"]
+        except Exception as imp_err:
+            logger.error(f"Geospatial impact assessment error: {imp_err}", exc_info=True)
+            fallback_km2 = inundation_geojson["properties"]["estimated_inundation_area_km2"]
+            impact_assessment = {
+                "affected_land_area_km2": fallback_km2 if risk_pct >= 20.0 else 0.0,
+                "affected_land_area_hectares": round(fallback_km2 * 100.0, 1) if risk_pct >= 20.0 else 0.0,
+                "population_exposed": max(0, int(round(fallback_km2 * 350.0))) if risk_pct >= 20.0 else 0,
+                "agricultural_area_at_risk_hectares": round(fallback_km2 * 45.0, 1) if risk_pct >= 20.0 else 0.0,
+                "agricultural_area_at_risk_km2": round(fallback_km2 * 0.45, 3) if risk_pct >= 20.0 else 0.0,
+                "roads_interrupted": 1 if risk_pct >= 50.0 else 0,
+                "affected_road_length_km": round(fallback_km2 * 0.25, 2) if risk_pct >= 20.0 else 0.0,
+                "risk_zone_perimeter_km": round((fallback_km2 ** 0.5) * 3.54, 2) if risk_pct >= 20.0 else 0.0,
+                "primary_road_corridor": "Regional Corridor",
+                "primary_crop_type": "Mixed Regional Cropland",
+                "demographic_zone": "Regional Baseline",
+                "impact_severity_level": category,
+            }
+            impact_data_source = {
+                "population": "FALLBACK_ESTIMATION",
+                "land_cover": "FALLBACK_ESTIMATION",
+                "roads": "FALLBACK_ESTIMATION",
+            }
+
         spatial_metrics = {
             "centroid": [lat, lon],
-            "inundation_area_km2": inundation_geojson["properties"]["estimated_inundation_area_km2"],
+            "inundation_area_km2": impact_assessment["affected_land_area_km2"],
+            "inundation_area_hectares": impact_assessment.get("affected_land_area_hectares", round(impact_assessment["affected_land_area_km2"] * 100.0, 1)),
             "mean_flood_depth_m": inundation_geojson["properties"]["estimated_mean_depth_m"],
-            "catchment_id": payload.catchment_id or "CUSTOM_SECTOR"
+            "catchment_id": payload.catchment_id or "CUSTOM_SECTOR",
+            "population_exposed": impact_assessment.get("population_exposed", 0),
+            "agricultural_area_at_risk_ha": impact_assessment.get("agricultural_area_at_risk_hectares", 0.0),
+            "roads_interrupted": impact_assessment.get("roads_interrupted", 0),
+            "affected_road_length_km": impact_assessment.get("affected_road_length_km", 0.0),
         }
 
         pred_id = f"PRED-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
@@ -1780,8 +1859,8 @@ def predict_risk(payload: PredictionInput):
             }
         logger.info(f"Prediction {pred_id}: {risk_pct}% ({category}), Top: {top_feature}, Conf: {confidence}, Mode: {feat_metadata.get('data_mode')}")
 
-        rain_current = float(features_df["rainfall_24h"].iloc[0]) if "rainfall_24h" in features_df.columns else float(features_df.iloc[0, 0])
-        rain_6h = float(features_df["forecast_rainfall_6h"].iloc[0]) if "forecast_rainfall_6h" in features_df.columns else float(features_df.iloc[0, 1])
+        rain_current = _safe_float(features_df["rainfall_24h"].iloc[0] if "rainfall_24h" in features_df.columns else features_df.iloc[0, 0], default=0.0)
+        rain_6h = _safe_float(features_df["forecast_rainfall_6h"].iloc[0] if "forecast_rainfall_6h" in features_df.columns else features_df.iloc[0, 1], default=0.0)
         rain_risk = calculate_rainfall_risk(
             rainfall_24h=rain_current,
             forecast_6h=rain_6h,
@@ -1872,6 +1951,8 @@ def predict_risk(payload: PredictionInput):
             },
             inundation_polygon=inundation_geojson,
             spatial_metrics=spatial_metrics,
+            impact_assessment=impact_assessment,
+            impact_data_source=impact_data_source,
             civil_defense_advisory=advisory,
             rainfall_risk=rain_risk,
             eight_hour_forecast=dl_8h,
@@ -2208,6 +2289,23 @@ def simulate_time_travel():
             features_dict=t24_features_dict
         )
 
+        stage_1_impact = {}
+        try:
+            if getattr(state, "impact_service", None):
+                stage_1_impact = state.impact_service.assess_impact(
+                    risk_polygon=stage_1_polygon,
+                    lat=19.0760,
+                    lon=72.8777,
+                    risk_pct=risk_pct,
+                    risk_level=category,
+                    slope=t24_input["slope"],
+                    elevation=t24_features_dict.get("elevation", 120.0),
+                    ndvi=t24_features_dict.get("ndvi", 0.52),
+                    catchment_id="CATCHMENT_DELTA_01"
+                )
+        except Exception as imp_ex:
+            logger.warning(f"Stage 1 impact assessment fallback: {imp_ex}")
+
         stage_1 = {
             "stage_id": "STAGE_1_T_MINUS_24H",
             "title": "T-24h — Early Warning Prediction",
@@ -2228,6 +2326,8 @@ def simulate_time_travel():
             "inundation_polygon": stage_1_polygon,
             "rainfall_risk": stage_1_rain_risk,
             "eight_hour_forecast": eight_hour_fc,
+            "impact_assessment": stage_1_impact.get("impact_assessment"),
+            "impact_data_source": stage_1_impact.get("impact_data_source"),
             "warning_status": "EARLY_WARNING" if risk_pct >= 60.0 else "ADVISORY" if risk_pct >= 40.0 else "NOMINAL",
             "human_explanation": t24_human_expl,
         }

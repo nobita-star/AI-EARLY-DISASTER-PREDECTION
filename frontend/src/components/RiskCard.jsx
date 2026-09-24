@@ -219,6 +219,36 @@ export default function RiskCard({ data, isRunning }) {
             </div>
           </div>
         </div>
+
+        {/* 4. Dynamic Geospatial Impact Assessment Strip */}
+        {data.impact_assessment && (
+          <div className="bg-[#0b101f] border border-cyan-900/40 rounded-lg p-2.5 mb-3 font-mono">
+            <div className="flex items-center justify-between text-[10px] text-cyan-400 font-bold mb-1.5 pb-1 border-b border-slate-800">
+              <span className="uppercase tracking-wider">GEOSPATIAL IMPACT ASSESSMENT</span>
+              <span className="text-[9px] text-slate-400">{data.impact_assessment.demographic_zone || 'GIS OVERLAY'}</span>
+            </div>
+            <div className="grid grid-cols-4 gap-1.5 text-center">
+              <div className="bg-slate-900/90 p-1.5 rounded border border-slate-800">
+                <div className="text-[8px] text-slate-400">AREA</div>
+                <div className="font-extrabold text-cyan-300 text-xs mt-0.5">{data.impact_assessment.affected_land_area_km2} km²</div>
+              </div>
+              <div className="bg-slate-900/90 p-1.5 rounded border border-slate-800">
+                <div className="text-[8px] text-slate-400">POPULATION</div>
+                <div className="font-extrabold text-purple-300 text-xs mt-0.5">
+                  {Number(data.impact_assessment.population_exposed).toLocaleString()}
+                </div>
+              </div>
+              <div className="bg-slate-900/90 p-1.5 rounded border border-slate-800">
+                <div className="text-[8px] text-slate-400">CROPLAND</div>
+                <div className="font-extrabold text-amber-300 text-xs mt-0.5">{data.impact_assessment.agricultural_area_at_risk_hectares} Ha</div>
+              </div>
+              <div className="bg-slate-900/90 p-1.5 rounded border border-slate-800">
+                <div className="text-[8px] text-slate-400">ROADS</div>
+                <div className="font-extrabold text-rose-300 text-xs mt-0.5">{data.impact_assessment.roads_interrupted} {data.impact_assessment.roads_interrupted === 1 ? 'Corridor' : 'Corridors'}</div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Model Attribution Footer */}

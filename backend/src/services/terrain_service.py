@@ -127,8 +127,10 @@ class TerrainService:
             logger.warning(f"DEM elevation stencil API error: {err}. Using topographic fallback.")
 
         # Topographic fallback estimates
-        default_elev = float(overrides.get("elevation", 140.0))
-        default_slope = float(overrides.get("slope", 4.5))
+        raw_elev = overrides.get("elevation") if overrides else None
+        default_elev = float(raw_elev) if raw_elev is not None else 140.0
+        raw_slope = overrides.get("slope") if overrides else None
+        default_slope = float(raw_slope) if raw_slope is not None else 4.5
 
         return {
             "data_mode": "FALLBACK",

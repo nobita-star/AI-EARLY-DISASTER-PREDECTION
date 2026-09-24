@@ -997,33 +997,37 @@
                 GIS buffer intersection with LandScan census & OpenStreetMap transport networks
               </p>
             </div>
-            <span class="text-[10px] font-mono text-slate-400">ALL ESTIMATES SCIENTIFICALLY LABELED</span>
+            <span id="impact-source-badge" class="text-[10px] font-mono text-slate-400">CALIBRATED GIS OVERLAY • ACTIVE ZONE</span>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             
             <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-3.5 space-y-1">
               <div class="text-[11px] font-mono text-slate-400 uppercase">AFFECTED LAND AREA</div>
-              <div class="text-2xl font-extrabold text-cyan-400">18.5 km²</div>
-              <div class="text-[10px] font-mono text-slate-400">ESTIMATED VIA HYDROLOGIC BUFFER</div>
+              <div id="impact-affected-area" class="text-2xl font-extrabold text-cyan-400">-- km²</div>
+              <div id="impact-affected-ha" class="text-[10px] font-mono text-slate-400">CALCULATING HECTARES...</div>
+              <div id="impact-geodesic-tag" class="text-[9px] font-mono text-cyan-500/80">GEODESIC EQUAL-AREA POLYGON</div>
             </div>
 
             <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-3.5 space-y-1">
               <div class="text-[11px] font-mono text-slate-400 uppercase">POPULATION EXPOSED</div>
-              <div class="text-2xl font-extrabold text-purple-400">21,400</div>
-              <div class="text-[10px] font-mono text-slate-400">ESTIMATED (CENSUS DENSITY MODEL)</div>
+              <div id="impact-population" class="text-2xl font-extrabold text-purple-400">--</div>
+              <div id="impact-population-zone" class="text-[10px] font-mono text-slate-400">CENSUS DENSITY MODEL</div>
+              <div id="impact-pop-source-tag" class="text-[9px] font-mono text-purple-400/80">PROTOTYPE DEMOGRAPHIC OVERLAY</div>
             </div>
 
             <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-3.5 space-y-1">
               <div class="text-[11px] font-mono text-slate-400 uppercase">AGRICULTURAL AT RISK</div>
-              <div class="text-2xl font-extrabold text-amber-400">832.5 Ha</div>
-              <div class="text-[10px] font-mono text-slate-400">CROPLAND & PLANTATIONS</div>
+              <div id="impact-agriculture" class="text-2xl font-extrabold text-amber-400">-- Ha</div>
+              <div id="impact-crop-type" class="text-[10px] font-mono text-slate-400">CROPLAND & PLANTATIONS</div>
+              <div id="impact-lulc-source-tag" class="text-[9px] font-mono text-amber-400/80">LULC SATELLITE INTERSECTION</div>
             </div>
 
             <div class="bg-slate-900/80 border border-slate-800 rounded-lg p-3.5 space-y-1">
               <div class="text-[11px] font-mono text-slate-400 uppercase">ROADS INTERRUPTED</div>
-              <div class="text-2xl font-extrabold text-rose-400">9.1 km</div>
-              <div class="text-[10px] font-mono text-slate-400">NH-85 & REGIONAL CORRIDORS</div>
+              <div id="impact-roads-interrupted" class="text-2xl font-extrabold text-rose-400">--</div>
+              <div id="impact-roads-length" class="text-[10px] font-mono text-rose-300">-- km SUBMERGED</div>
+              <div id="impact-roads-corridor" class="text-[9px] font-mono text-slate-400 truncate">OPENSTREETMAP NETWORK</div>
             </div>
 
           </div>
@@ -1036,20 +1040,13 @@
                 <i data-lucide="home" class="w-3.5 h-3.5 text-amber-400"></i>
                 <span>Nearby Settlements at Risk</span>
               </div>
-              <div class="space-y-2 text-xs font-mono">
+              <div id="impact-settlements-list" class="space-y-2 text-xs font-mono">
                 <div class="flex justify-between items-center p-2 rounded bg-slate-900/60 border border-slate-800">
                   <div>
-                    <span class="font-bold text-white">Lowland Sector 4 Habitations</span>
-                    <div class="text-[10px] text-slate-400">0.8 km from inundation axis • 9,600 residents</div>
+                    <span class="font-bold text-white">Lowland Sector Habitations</span>
+                    <div class="text-[10px] text-slate-400">Analyzing proximity to inundation perimeter...</div>
                   </div>
-                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800">EVACUATE</span>
-                </div>
-                <div class="flex justify-between items-center p-2 rounded bg-slate-900/60 border border-slate-800">
-                  <div>
-                    <span class="font-bold text-white">Riparian Zone 2 Village</span>
-                    <div class="text-[10px] text-slate-400">1.6 km downstream • 7,500 residents</div>
-                  </div>
-                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800">STANDBY</span>
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-900 text-slate-400 border border-slate-800">SCANNING</span>
                 </div>
               </div>
             </div>
@@ -1059,20 +1056,13 @@
                 <i data-lucide="zap" class="w-3.5 h-3.5 text-cyan-400"></i>
                 <span>Critical Infrastructure Exposure</span>
               </div>
-              <div class="space-y-2 text-xs font-mono">
+              <div id="impact-infra-list" class="space-y-2 text-xs font-mono">
                 <div class="flex justify-between items-center p-2 rounded bg-slate-900/60 border border-slate-800">
                   <div>
-                    <span class="font-bold text-white">33kV Electric Grid Substation</span>
-                    <div class="text-[10px] text-slate-400">Distance: 1.1 km • Flood Berms Activated</div>
+                    <span class="font-bold text-white">Electric Grid Substation & Treatment Plant</span>
+                    <div class="text-[10px] text-slate-400">Evaluating physical buffer intersection...</div>
                   </div>
-                  <span class="text-rose-400 font-bold">HIGH EXPOSURE</span>
-                </div>
-                <div class="flex justify-between items-center p-2 rounded bg-slate-900/60 border border-slate-800">
-                  <div>
-                    <span class="font-bold text-white">Municipal Water Treatment Plant</span>
-                    <div class="text-[10px] text-slate-400">Distance: 0.6 km • Backwash Pumping Active</div>
-                  </div>
-                  <span class="text-rose-400 font-bold">CRITICAL EXPOSURE</span>
+                  <span class="text-slate-400 font-bold">SCANNING</span>
                 </div>
               </div>
             </div>
@@ -1988,10 +1978,111 @@
         }
         if (pred) {
           document.getElementById('kpi-confidence').innerText = `${(pred.confidence_indicator * 100).toFixed(1)}%`;
-          const areaKm2 = pred.spatial_metrics?.inundation_area_km2 || (currentRiskScore * 0.22);
-          document.getElementById('kpi-affected-area').innerText = areaKm2.toFixed(1);
-          document.getElementById('kpi-population').innerText = `${Math.round(areaKm2 * 1150).toLocaleString()}`;
-          document.getElementById('kpi-prediction-status').innerText = currentRiskScore >= 60 ? "DEGRADATION LIKELY" : "SURFACE STABLE";
+          
+          // DYNAMIC GEOSPATIAL IMPACT ASSESSMENT INTEGRATION
+          const impact = pred.impact_assessment || {};
+          const areaKm2 = (impact.affected_land_area_km2 !== undefined)
+            ? Number(impact.affected_land_area_km2)
+            : Number(pred.spatial_metrics?.inundation_area_km2 || (currentRiskScore * 0.22));
+          const popExp = (impact.population_exposed !== undefined)
+            ? Number(impact.population_exposed)
+            : Number(pred.spatial_metrics?.population_exposed || Math.round(areaKm2 * 350));
+          const agriHa = (impact.agricultural_area_at_risk_hectares !== undefined)
+            ? Number(impact.agricultural_area_at_risk_hectares)
+            : Number(pred.spatial_metrics?.agricultural_area_at_risk_ha || Math.round(areaKm2 * 45.0));
+          const roadsCount = (impact.roads_interrupted !== undefined)
+            ? Number(impact.roads_interrupted)
+            : Number(pred.spatial_metrics?.roads_interrupted || (currentRiskScore >= 50 ? 1 : 0));
+          const roadsKm = (impact.affected_road_length_km !== undefined)
+            ? Number(impact.affected_road_length_km)
+            : Number(pred.spatial_metrics?.affected_road_length_km || 0.0);
+
+          // 1. Top KPI Executive Bar
+          const kpiArea = document.getElementById('kpi-affected-area');
+          if (kpiArea) kpiArea.innerText = areaKm2.toFixed(1);
+          const kpiPop = document.getElementById('kpi-population');
+          if (kpiPop) kpiPop.innerText = popExp >= 1000 ? `${(popExp / 1000).toFixed(1)}k` : `${popExp.toLocaleString()}`;
+          const kpiStatus = document.getElementById('kpi-prediction-status');
+          if (kpiStatus) kpiStatus.innerText = currentRiskScore >= 60 ? "DEGRADATION LIKELY" : "SURFACE STABLE";
+
+          // 2. Section 8 Impact Card 1: Affected Land Area
+          const elArea = document.getElementById('impact-affected-area');
+          if (elArea) elArea.innerText = `${areaKm2.toFixed(1)} km²`;
+          const elAreaHa = document.getElementById('impact-affected-ha');
+          if (elAreaHa) {
+            const haVal = impact.affected_land_area_hectares !== undefined 
+              ? impact.affected_land_area_hectares 
+              : Math.round(areaKm2 * 100.0 * 10) / 10;
+            elAreaHa.innerText = `${haVal.toLocaleString()} HECTARES`;
+          }
+
+          // 3. Section 8 Impact Card 2: Population Exposed
+          const elPop = document.getElementById('impact-population');
+          if (elPop) elPop.innerText = popExp.toLocaleString();
+          const elPopZone = document.getElementById('impact-population-zone');
+          if (elPopZone) {
+            const zoneText = impact.demographic_zone || 'REGIONAL DEMOGRAPHIC OVERLAY';
+            const densText = impact.population_density_per_km2 ? ` (${impact.population_density_per_km2}/km²)` : '';
+            elPopZone.innerText = (zoneText + densText).toUpperCase();
+          }
+
+          // 4. Section 8 Impact Card 3: Agricultural Land at Risk
+          const elAgri = document.getElementById('impact-agriculture');
+          if (elAgri) elAgri.innerText = `${agriHa.toLocaleString()} Ha`;
+          const elCrop = document.getElementById('impact-crop-type');
+          if (elCrop) {
+            elCrop.innerText = (impact.primary_crop_type || 'CROPLAND & PLANTATIONS').toUpperCase();
+          }
+
+          // 5. Section 8 Impact Card 4: Roads Interrupted
+          const elRoads = document.getElementById('impact-roads-interrupted');
+          if (elRoads) {
+            elRoads.innerText = roadsCount > 0 ? `${roadsCount} ${roadsCount === 1 ? 'Corridor' : 'Corridors'}` : '0 Interrupted';
+          }
+          const elRoadsLen = document.getElementById('impact-roads-length');
+          if (elRoadsLen) {
+            elRoadsLen.innerText = `${roadsKm.toFixed(1)} km SUBMERGED`;
+          }
+          const elRoadCorridor = document.getElementById('impact-roads-corridor');
+          if (elRoadCorridor) {
+            elRoadCorridor.innerText = impact.primary_road_corridor || 'No Intersecting Highways';
+          }
+
+          // 6. Section 8 Source Banner
+          const srcBadge = document.getElementById('impact-source-badge');
+          if (srcBadge) {
+            const statusLabel = pred.impact_data_source?.status || 'CALIBRATED GIS OVERLAY';
+            const zoneState = currentRiskScore >= 20.0 ? 'ACTIVE ZONE' : 'MINIMAL BUFFER';
+            srcBadge.innerText = `${statusLabel} • ${zoneState}`;
+          }
+
+          // 7. Section 8 Nearby Settlements List
+          const setList = document.getElementById('impact-settlements-list');
+          if (setList && impact.nearby_settlements && impact.nearby_settlements.length > 0) {
+            setList.innerHTML = impact.nearby_settlements.map(s => `
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900/60 border border-slate-800">
+                <div>
+                  <span class="font-bold text-white">${s.name}</span>
+                  <div class="text-[10px] text-slate-400">${s.distance_km} km from inundation axis • ${s.estimated_residents.toLocaleString()} residents</div>
+                </div>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${s.status_class || 'bg-rose-950 text-rose-300 border border-rose-800'}">${s.status}</span>
+              </div>
+            `).join('');
+          }
+
+          // 8. Section 8 Critical Infrastructure List
+          const infraList = document.getElementById('impact-infra-list');
+          if (infraList && impact.critical_infrastructure && impact.critical_infrastructure.length > 0) {
+            infraList.innerHTML = impact.critical_infrastructure.map(inf => `
+              <div class="flex justify-between items-center p-2 rounded bg-slate-900/60 border border-slate-800">
+                <div>
+                  <span class="font-bold text-white">${inf.name}</span>
+                  <div class="text-[10px] text-slate-400">Distance: ${inf.distance_km} km • ${inf.action}</div>
+                </div>
+                <span class="${inf.exposure_level.includes('CRITICAL') || inf.exposure_level.includes('HIGH') ? 'text-rose-400' : 'text-cyan-400'} font-bold">${inf.exposure_level}</span>
+              </div>
+            `).join('');
+          }
         }
 
         // 7. Update 8-Hour Early Warning Bar & Remote Sensing Quality
